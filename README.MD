@@ -9,7 +9,6 @@
 ![Dashboard](.github/assets/preview.png)
 
 ## ROADMAP
-- [ ] File explorer
 - [ ] Terminal
 
 ## Code base
