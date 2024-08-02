@@ -2,6 +2,7 @@
 
 namespace App\Controller\Component;
 
+use SplFileInfo;
 use App\Manager\LogManager;
 use App\Manager\AuthManager;
 use App\Manager\ErrorManager;
@@ -91,8 +92,24 @@ class FileSystemBrowserController extends AbstractController
             $finder = new Finder();
             $finder->in($path)->depth('== 0');
 
+            // get file list as array
+            $list = iterator_to_array($finder, false);
+
+            // sort file list
+            usort($list, function (SplFileInfo $a, SplFileInfo $b) {
+                // sort directories first
+                if ($a->isDir() && !$b->isDir()) {
+                    return -1;
+                } elseif (!$a->isDir() && $b->isDir()) {
+                    return 1;
+                }
+
+                // sort by filename
+                return strcasecmp($a->getFilename(), $b->getFilename());
+            });
+
             // loop through the files and directories
-            foreach ($finder as $file) {
+            foreach ($list as $file) {
                 $files[] = [
                     'name' => $file->getFilename(),
                     'size' => $file->getSize(),
@@ -185,7 +202,7 @@ class FileSystemBrowserController extends AbstractController
             finfo_close($finfo);
 
             // check if the file type is supported
-            if (strpos($mimeType, 'text') === false) {
+            if (strpos($mimeType, 'executable')) {
                 // return a 400 response
                 return $this->json([
                     'error' => 'unsupported file type'

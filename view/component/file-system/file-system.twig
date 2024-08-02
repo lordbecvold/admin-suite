@@ -1,5 +1,6 @@
 {% extends 'common/layout.twig' %}
 
+{# FILE SYSTEM BROWSER COMPONENT #}
 {% block component %}
 {# SUB-NAVIGATION #}
 <div class="bg-neutral-900 border-b border-neutral-700 sub-navigation breadcrumb">
@@ -47,94 +48,124 @@
         <pre id="file-content" class="text-sm text-cyan card-color p-4 rounded mt-4 overflow-auto" style="height: calc(100% - 50px);"></pre>
     </div>
 </div>
+
+{# MODAL FOR ERRORS #}
+<div id="error-modal" class="fixed inset-0 flex items-center justify-center hidden z-50">
+    <div class="bg-black opacity-50 absolute inset-0"></div>
+    <div class="bg-neutral-900 rounded-lg shadow-lg p-6 relative z-10 w-1/3 border border-neutral-700">
+        <h3 class="text-lg font-medium text-white mb-4">Error</h3>
+        <p id="error-message" class="text-white"></p>
+        <div class="mt-4 flex justify-end">
+            <button onclick="closeErrorModal()" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Close</button>
+        </div>
+    </div>
 </div>
 
 {# FILE SYSTEM BROWSER JAVASCRIPT #}
 <script>
+    // load file system list
     document.addEventListener('DOMContentLoaded', function() {
-        const path = '{{ currentPath }}';
-        loadFileSystem(path);
-    });
+        const path = '{{ currentPath }}'
+        loadFileSystem(path)
+    })
+
+    // handle escape key
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeErrorModal()
+        }
+    })
 
     // load file system list
     function loadFileSystem(path) {
         fetch(`{{ path('app_file_system_list') }}?path=${encodeURIComponent(path)}`)
             .then(response => response.json())
             .then(data => {
-                const fileList = document.getElementById('file-system-list');
-                fileList.innerHTML = '';
+                const fileList = document.getElementById('file-system-list')
+                fileList.innerHTML = ''
                 data.forEach(file => {
-                    const row = document.createElement('tr');
-                    row.classList.add('hover:bg-neutral-700', 'cursor-pointer');
+                    const row = document.createElement('tr')
+                    row.classList.add('hover:bg-neutral-700', 'cursor-pointer')
                     row.innerHTML = `
-                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-100 border-b border-neutral-700">${file.is_dir ? `<strong>${file.name}</strong>` : file.name}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-100 border-b border-neutral-700">${file.is_dir ? `<strong class="link">${file.name}</strong>` : file.name}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-100 border-b border-neutral-700">${file.size}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-100 border-b border-neutral-700">${file.permissions}</td>
-                    `;
+                    `
                     row.addEventListener('click', () => {
                         if (file.is_dir) {
-                            loadFileSystem(file.path);
+                            loadFileSystem(file.path)
                         } else {
-                            fetchDetail(file.path);
+                            fetchDetail(file.path)
                         }
-                    });
-                    fileList.appendChild(row);
-                });
+                    })
+                    fileList.appendChild(row)
+                })
 
                 // update breadcrumb navigation
-                updateBreadcrumb(path);
-            });
+                updateBreadcrumb(path)
+            })
     }
 
-    // fetch file file details
+    // fetch file details
     function fetchDetail(path) {
         fetch(`{{ path('app_file_system_detail') }}?path=${encodeURIComponent(path)}`)
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    alert(data.error);
+                    showErrorModal(data.error)
                 } else {
-                    document.getElementById('file-name').textContent = data.name;
-                    document.getElementById('file-content').textContent = data.content;
-                    document.getElementById('file-list-section').classList.add('hidden');
-                    document.getElementById('file-content-section').classList.remove('hidden');
+                    document.getElementById('file-name').textContent = data.name
+                    document.getElementById('file-content').textContent = data.content
+                    document.getElementById('file-list-section').classList.add('hidden')
+                    document.getElementById('file-content-section').classList.remove('hidden')
                 }
-            });
+            })
     }
 
     // close file content view
     function closeFile() {
-        document.getElementById('file-content-section').classList.add('hidden');
-        document.getElementById('file-list-section').classList.remove('hidden');
+        document.getElementById('file-content-section').classList.add('hidden')
+        document.getElementById('file-list-section').classList.remove('hidden')
     }
 
     // update breadcrumb navigation
     function updateBreadcrumb(path) {
-        const breadcrumb = document.getElementById('breadcrumb');
-        const parts = path.split('/').filter(part => part);
-        breadcrumb.innerHTML = '';
-        let currentPath = '';
+        const breadcrumb = document.getElementById('breadcrumb')
+        const parts = path.split('/').filter(part => part)
+        breadcrumb.innerHTML = ''
+        let currentPath = ''
         if (path === '/') {
-            breadcrumb.innerHTML = '<span class="cursor-pointer hover:underline text-blue-500" onclick="loadFileSystem(\'/\')">/base</span>';
+            breadcrumb.innerHTML = '<span class="cursor-pointer hover:underline text-blue-500" onclick="loadFileSystem(\'/\')">/base</span>'
         } else {
-            breadcrumb.innerHTML = '<span class="cursor-pointer hover:underline text-blue-500" onclick="loadFileSystem(\'/\')">/base</span>/';
+            breadcrumb.innerHTML = '<span class="cursor-pointer hover:underline text-blue-500" onclick="loadFileSystem(\'/\')">/base</span>/'
             parts.forEach((part, index) => {
-                currentPath += `/${part}`;
-                const span = document.createElement('span');
-                span.classList.add('cursor-pointer', 'hover:underline', 'text-blue-500');
-                span.onclick = () => {
-                    loadFileSystem(currentPath);
-                }
-                span.textContent = part;
-                span.addEventListener('click', () => {
-                    loadFileSystem(currentPath);
-                });
-                breadcrumb.appendChild(span);
+                currentPath += `/${part}`
+                breadcrumb.innerHTML += `
+                    <span class="cursor-pointer hover:underline text-blue-500" onclick="loadFileSystem('${currentPath}')">
+                        ${part}
+                    </span>
+                `
                 if (index < parts.length - 1) {
-                    breadcrumb.innerHTML += '/';
+                    breadcrumb.innerHTML += '/'
                 }
-            });
+            })
         }
+
+        closeFile()
+    }
+
+    // show error modal
+    function showErrorModal(message) {
+        const modal = document.getElementById('error-modal')
+        const errorMessage = document.getElementById('error-message')
+        errorMessage.textContent = message
+        modal.classList.remove('hidden')
+    }
+
+    // close error modal
+    function closeErrorModal() {
+        const modal = document.getElementById('error-modal')
+        modal.classList.add('hidden')
     }
 </script>
 {% endblock %}

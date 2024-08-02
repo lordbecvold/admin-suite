@@ -9,6 +9,9 @@
 ![Dashboard](.github/assets/preview.png)
 
 ## ROADMAP
+- [ ] Filesystem util class for filesystem browser methods
+- [ ] Log level const class (INFO, WARNING, CRITICAL)
+- [ ] Color log row by level
 - [ ] Terminal
 
 ## Code base
