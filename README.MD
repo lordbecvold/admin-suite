@@ -10,6 +10,9 @@
 
 ## ROADMAP
 - [ ] Terminal
+- [ ] Better config load (primary & secondary)
+- [ ] Functional improvements
+- [ ] Internal improvements
 
 ## Code base
 This project is based on the Symfony framework. The entire project is designed to require as few dependencies and additional software as possible for easy installation and maintenance.
