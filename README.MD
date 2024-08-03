@@ -9,8 +9,6 @@
 ![Dashboard](.github/assets/preview.png)
 
 ## ROADMAP
-- [ ] Log level const class (INFO, WARNING, CRITICAL)
-- [ ] Color log row by level
 - [ ] Terminal
 
 ## Code base
