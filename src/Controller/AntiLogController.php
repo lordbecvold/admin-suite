@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Manager\LogManager;
 use App\Manager\AuthManager;
+use App\Annotation\Authorization;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -34,20 +35,13 @@ class AntiLogController extends AbstractController
      *
      * @return Response The redirect response
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/13378/antilog', methods:['GET'], name: 'app_anti_log_enable')]
     public function enableAntiLog(Request $request): Response
     {
         // check if user is logged in
         if (!$this->authManager->isUserLogedin()) {
             return $this->redirectToRoute('app_auth_login');
-        }
-
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
         }
 
         // get anti log state parameter

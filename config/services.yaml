@@ -14,7 +14,7 @@ services:
             - '../src/Kernel.php'
 
     # --------------------------------------------------------------------------------- #
-    # error handeling controller for error manager
+    # error handeling listener for error manager
     Symfony\Component\HttpKernel\EventListener\ErrorListener:
         arguments:
             $controller: 'App\Controller\ErrorController::show'
@@ -27,42 +27,47 @@ services:
     # resources build checker
     App\Middleware\AssetsCheckMiddleware:
         tags:
-            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 9 }
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 10 }
 
     # check if system is linux
     App\Middleware\LinuxCheckMiddleware:
         tags:
-            - { name: kernel.event_listener, event: kernel.request, priority: 8 }
+            - { name: kernel.event_listener, event: kernel.request, priority: 9 }
 
     # escape request data
     App\Middleware\EscapeRequestDataMiddleware:
         tags:
-            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 7 }
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 8 }
 
     # database online checker
     App\Middleware\DatabaseOnlineMiddleware:
         tags:
-            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 6 }
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 7 }
 
     # security check service
     App\Middleware\SecurityCheckMiddleware:
         tags:
-            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 5 }
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 6 }
 
     # maintenance mode checker
     App\Middleware\MaintenanceMiddleware:
         tags:
-            - { name: kernel.event_listener, event: kernel.request, priority: 4 }
+            - { name: kernel.event_listener, event: kernel.request, priority: 5 }
 
     # auto login middleware for remember me
     App\Middleware\AutoLoginMiddleware:
         tags:
-            - { name: kernel.event_listener, event: kernel.request, priority: 3 }
+            - { name: kernel.event_listener, event: kernel.request, priority: 4 }
 
     # authentificated check middleware
     App\Middleware\AuthentificatedCheckMiddleware:
         tags:
-            - { name: kernel.event_listener, event: kernel.request, priority: 2 }
+            - { name: kernel.event_listener, event: kernel.request, priority: 3 }
+
+    # authorization check middleware
+    App\Middleware\AuthorizationMiddleware:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 2 }
 
     # user banned check middleware
     App\Middleware\BannedCheckMiddleware:

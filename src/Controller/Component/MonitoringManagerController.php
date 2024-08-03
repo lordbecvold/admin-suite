@@ -6,6 +6,7 @@ use App\Util\AppUtil;
 use App\Manager\LogManager;
 use App\Manager\AuthManager;
 use App\Manager\ServiceManager;
+use App\Annotation\Authorization;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -67,6 +68,7 @@ class MonitoringManagerController extends AbstractController
      *
      * @return Response The rendered monitoring config page view
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/monitoring/config', methods:['GET'], name: 'app_manager_monitoring_config')]
     public function monitoringConfig(): Response
     {

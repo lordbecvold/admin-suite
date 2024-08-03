@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Manager\AuthManager;
 use App\Manager\ErrorManager;
 use App\Manager\ServiceManager;
+use App\Annotation\Authorization;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -40,20 +41,13 @@ class ActionRunnerController extends AbstractController
      *
      * @return Response The redirect response
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/service/action/runner', methods:['GET'], name: 'app_action_runner')]
     public function runServiceAction(Request $request): Response
     {
         // check if user is logged in
         if (!$this->authManager->isUserLogedin()) {
             return $this->redirectToRoute('app_auth_login');
-        }
-
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
         }
 
         // get request parameters

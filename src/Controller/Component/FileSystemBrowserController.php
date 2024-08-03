@@ -4,6 +4,7 @@ namespace App\Controller\Component;
 
 use App\Manager\AuthManager;
 use App\Util\FilesystemUtil;
+use App\Annotation\Authorization;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -34,17 +35,10 @@ class FileSystemBrowserController extends AbstractController
      *
      * @return Response The file list view response
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/filesystem', methods:['GET'], name: 'app_file_system_browser')]
     public function filesystemList(Request $request): Response
     {
-        // check if user has admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get current page from request query params
         $path = (string) $request->query->get('path', '/');
 
@@ -69,17 +63,10 @@ class FileSystemBrowserController extends AbstractController
      *
      * @return Response The file browser view response
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/filesystem/view', methods:['GET'], name: 'app_file_system_view')]
     public function filesystemView(Request $request): Response
     {
-        // check if user has admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get the browsing path
         $path = (string) $request->query->get('path', '/');
 

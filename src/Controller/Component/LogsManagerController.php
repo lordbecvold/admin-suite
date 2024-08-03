@@ -7,6 +7,7 @@ use App\Manager\LogManager;
 use App\Manager\AuthManager;
 use App\Manager\UserManager;
 use App\Util\VisitorInfoUtil;
+use App\Annotation\Authorization;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -104,17 +105,10 @@ class LogsManagerController extends AbstractController
      *
      * @return Response The system log view
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/logs/system', methods:['GET'], name: 'app_manager_logs_system')]
     public function systemLogsTable(Request $request): Response
     {
-        // check if user has admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get selected log file from query parameter
         $logFile = $request->query->get('file', 'none');
 
@@ -152,17 +146,10 @@ class LogsManagerController extends AbstractController
      *
      * @return Response The exception log view
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/logs/exception/files', methods:['GET'], name: 'app_manager_logs_exception_files')]
     public function exceptionFiles(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get exception files
         $exceptionFiles = $this->logManager->getExceptionFiles();
 
@@ -212,17 +199,10 @@ class LogsManagerController extends AbstractController
      *
      * @return Response The redirect response
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/logs/exception/delete', methods:['GET'], name: 'app_manager_logs_exception_delete')]
     public function deleteExceptionFile(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get exception file name from query parameter
         $exceptionFile = (string) $request->query->get('file', 'none');
 
@@ -242,17 +222,10 @@ class LogsManagerController extends AbstractController
      *
      * @return Response Redirects to the dashboard page after setting logs to 'READED'
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/logs/set/readed', methods:['GET'], name: 'app_manager_logs_set_readed')]
     public function setAllLogsToReaded(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get current page from request query params
         $page = (int) $request->query->get('page', '1');
 

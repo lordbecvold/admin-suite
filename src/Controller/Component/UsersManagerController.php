@@ -8,6 +8,7 @@ use App\Manager\AuthManager;
 use App\Manager\UserManager;
 use App\Util\VisitorInfoUtil;
 use App\Manager\ErrorManager;
+use App\Annotation\Authorization;
 use App\Form\Auth\RegistrationFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -180,17 +181,10 @@ class UsersManagerController extends AbstractController
      *
      * @return Response The users manager register view
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/users/register', methods:['GET', 'POST'], name: 'app_manager_users_register')]
     public function userRegister(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get page limit from config
         $pageLimit = $this->appUtil->getPageLimiter();
 
@@ -252,17 +246,10 @@ class UsersManagerController extends AbstractController
      *
      * @return Response The users manager table redirect
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/users/role/update', methods:['POST'], name: 'app_manager_users_role_update')]
     public function userRoleUpdate(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get user id to delete
         $userId = (int) $request->query->get('id');
 
@@ -326,17 +313,10 @@ class UsersManagerController extends AbstractController
      *
      * @return Response The users manager redirect
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/users/delete', methods:['GET'], name: 'app_manager_users_delete')]
     public function userDelete(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get user id to delete
         $userId = (int) $request->query->get('id');
 
@@ -380,17 +360,10 @@ class UsersManagerController extends AbstractController
      *
      * @return Response The users manager redirect
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/users/ban', methods:['GET'], name: 'app_manager_users_ban')]
     public function banUser(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get request data
         $userId = (int) $request->query->get('id');
         $page = (int) $request->query->get('page', '1');

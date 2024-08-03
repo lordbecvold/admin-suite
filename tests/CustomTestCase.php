@@ -24,7 +24,7 @@ class CustomTestCase extends WebTestCase
      *
      * @return void
      */
-    protected function simulateLogin(KernelBrowser $client): void
+    public function simulateLogin(KernelBrowser $client): void
     {
         // create a mock user
         $mockUser = new User();

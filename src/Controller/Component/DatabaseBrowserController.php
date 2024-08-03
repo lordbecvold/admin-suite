@@ -6,6 +6,7 @@ use App\Util\AppUtil;
 use App\Manager\AuthManager;
 use App\Manager\ErrorManager;
 use App\Manager\DatabaseManager;
+use App\Annotation\Authorization;
 use App\Form\Database\QueryConsoleFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,17 +46,10 @@ class DatabaseBrowserController extends AbstractController
      *
      * @return Response The rendered database browser page
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/database', methods:['GET'], name: 'app_manager_database')]
     public function databaseBrowser(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get database name from query parameter
         $databaseName = (string) $request->query->get('database', '');
 
@@ -93,17 +87,10 @@ class DatabaseBrowserController extends AbstractController
      *
      * @return Response The rendered table data browser page
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/database/table', methods:['GET'], name: 'app_manager_database_table_browser')]
     public function databaseTableBrowser(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get request parameters
         $page = (int) $request->query->get('page', '1');
         $tableName = (string) $request->query->get('table');
@@ -150,17 +137,10 @@ class DatabaseBrowserController extends AbstractController
      *
      * @return Response The rendered add row form
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/database/add', methods: ['GET', 'POST'], name: 'app_manager_database_add')]
     public function databaseAddRow(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get request parameters
         $tableName = (string) $request->query->get('table');
         $databaseName = (string) $request->query->get('database');
@@ -278,17 +258,10 @@ class DatabaseBrowserController extends AbstractController
      *
      * @return Response The rendered edit row form
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/database/edit', methods: ['GET', 'POST'], name: 'app_manager_database_edit')]
     public function databaseEditRow(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get request parameters
         $id = (int) $request->query->get('id');
         $page = (int) $request->query->get('page', '1');
@@ -415,17 +388,10 @@ class DatabaseBrowserController extends AbstractController
      *
      * @return Response The rendered delete row form
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/database/delete', methods: ['GET'], name: 'app_manager_database_delete')]
     public function databaseDeleteRow(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get request parameters
         $id = (int) $request->query->get('id');
         $page = (int) $request->query->get('page', '1');
@@ -474,17 +440,10 @@ class DatabaseBrowserController extends AbstractController
      *
      * @return Response The rendered truncate table form
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/database/truncate', methods: ['GET'], name: 'app_manager_database_truncate')]
     public function databaseTruncateTable(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get request parameters
         $confirm = (string) $request->query->get('confirm', 'no');
         $tableName = (string) $request->query->get('table');
@@ -536,17 +495,10 @@ class DatabaseBrowserController extends AbstractController
      *
      * @return Response The rendered database dump page
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/database/dump', methods: ['GET'], name: 'app_manager_database_dump')]
     public function databaseDump(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // get request parameters
         $plain = (string) $request->query->get('plain', 'no');
         $select = (string) $request->query->get('select', 'yes');
@@ -610,17 +562,10 @@ class DatabaseBrowserController extends AbstractController
      *
      * @return Response The rendered database console page
      */
+    #[Authorization(authorization: 'ADMIN')]
     #[Route('/manager/database/console', methods: ['GET', 'POST'], name: 'app_manager_database_console')]
     public function databaseConsole(Request $request): Response
     {
-        // check if user have admin permissions
-        if (!$this->authManager->isLoggedInUserAdmin()) {
-            return $this->render('component/no-permissions.twig', [
-                'isAdmin' => $this->authManager->isLoggedInUserAdmin(),
-                'userData' => $this->authManager->getLoggedUserRepository(),
-            ]);
-        }
-
         // create query console form
         $queryForm = $this->createForm(QueryConsoleFormType::class);
         $queryForm->handleRequest($request);

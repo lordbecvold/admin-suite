@@ -9,7 +9,6 @@
 ![Dashboard](.github/assets/preview.png)
 
 ## ROADMAP
-- [ ] Better authorization check
 - [ ] Log level const class (INFO, WARNING, CRITICAL)
 - [ ] Color log row by level
 - [ ] Terminal
