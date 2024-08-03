@@ -1,0 +1,39 @@
+{% extends 'common/layout.twig' %}
+
+{# FILE SYSTEM BROWSER COMPONENT - VIEW FILE #}
+{% block component %}
+{# SUB-NAVIGATION #}
+<div class="bg-neutral-900 border-b border-neutral-700 sub-navigation breadcrumb">
+    <a href={{ path('app_dashboard') }} class="border border-gray-600 font-bold px-1 text-white">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </a>
+    <span class="mr-1 text-white">Filesystem</span>
+</div>
+
+{# FILESYSTEM BROWSER #}
+<div class="component">
+    {# FILESYSTEM PATH BREADCRUMB #}
+    <div class="p-1 card-color border-b border-neutral-700 shadow flex items-center space-x-2">
+        <span class="text-sm font-medium text-gray-300">Path:</span>
+        <span class="text-sm text-gray-100">
+            {% set parts = currentPath|split('/') %}
+            <a href={{ path('app_file_system_browser', { 'path': '/' }) }} class="text-blue-500 hover:underline">/base</a>
+            {% set accumulatedPath = '' %}
+            {% for part in parts|slice(0, parts|length - 1) %}
+                {% if part is not empty %}
+                    {% set accumulatedPath = accumulatedPath ~ '/' ~ part %}
+                    <span>/</span>
+                    <a href={{ path('app_file_system_browser', { 'path': accumulatedPath }) }} class="text-blue-500 hover:underline">{{ part }}</a>
+                {% endif %}
+            {% endfor %}
+        </span>
+    </div>
+
+    {# FILE CONTENT VIEW #}
+    <div class="card-color shadow-md overflow-auto">
+        <div class="flex justify-between items-center">
+            <h3 class="text-lg font-medium text-gray-100 pl-2 pt-1">{{ currentPath|split('/')|last }}</h3>
+        </div>
+        <pre class="text-sm text-cyan card-color p-2 rounded mt-1 overflow-auto">{{ fileContent|e }}</pre>
+    </div>
+{% endblock %}

@@ -77,10 +77,9 @@ class NonAuthRedirectTest extends WebTestCase
             '/manager/database/console',
             '/manager/database/truncate'
         ],
-        'file_system_browser' => [
-            '/filesystem/browser',
-            '/filesystem/api/list',
-            '/filesystem/api/detail'
+        'file_browser' => [
+            '/filesystem',
+            '/filesystem/view'
         ]
     ];
 

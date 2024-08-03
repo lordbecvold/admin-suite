@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 /**
  * Class FileSystemBrowserControllerTest
  *
- * This test verifies that the file system browser page loads correctly and displays the expected content
+ * Test for file system browser controller
  *
  * @package App\Tests\Controller\Component
  */
@@ -26,44 +26,36 @@ class FileSystemBrowserControllerTest extends CustomTestCase
     }
 
     /**
-     * Tests that the file system browser page loads successfully and contains the expected content
+     * Test load file system list page
      *
      * @return void
      */
     public function testLoadFileSystemBrowserPage(): void
     {
-        $this->client->request('GET', '/filesystem/browser');
+        $this->client->request('GET', '/filesystem');
 
         // assert response
         $this->assertSelectorTextContains('title', 'Admin suite');
         $this->assertSelectorTextContains('body', 'Filesystem');
-        $this->assertSelectorTextContains('body', 'Path:');
+        $this->assertSelectorTextContains('body', 'Name');
+        $this->assertSelectorTextContains('body', 'Size');
+        $this->assertSelectorTextContains('body', 'Permissions');
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
     /**
-     * Tests that the file system browser API returns a list of files and directories
+     * Test load file system view page
      *
      * @return void
      */
-    public function testLoadFilesList(): void
+    public function testLoadFileSystemViewPage(): void
     {
-        $this->client->request('GET', '/filesystem/api/list');
+        $this->client->request('GET', '/filesystem/view?path=/usr/lib/os-release');
 
         // assert response
+        $this->assertSelectorTextContains('title', 'Admin suite');
+        $this->assertSelectorTextContains('body', 'Filesystem');
+        $this->assertSelectorTextContains('body', 'os-release');
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-    }
-
-    /**
-     * Tests that the file system browser API returns a 400 response when the path parameter is empty
-     *
-     * @return void
-     */
-    public function testLoadFileDetailsEmptyPath(): void
-    {
-        $this->client->request('GET', '/filesystem/api/detail');
-
-        // assert response
-        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 }

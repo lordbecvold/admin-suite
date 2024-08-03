@@ -1,0 +1,74 @@
+{% extends 'common/layout.twig' %}
+
+{# FILE SYSTEM BROWSER COMPONENT #}
+{% block component %}
+{# SUB-NAVIGATION #}
+<div class="bg-neutral-900 border-b border-neutral-700 sub-navigation breadcrumb">
+    <a href={{ path('app_dashboard') }} class="border border-gray-600 font-bold px-1 text-white">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </a>
+    <span class="mr-1 text-white">Filesystem</span>
+</div>
+
+<div class="component">
+    {# FILESYSTEM PATH BREADCRUMB #}
+    <div class="p-1 card-color border-b border-neutral-700 shadow flex items-center space-x-2">
+        <span class="text-sm font-medium text-gray-300">Path:</span>
+        <span class="text-sm text-gray-100">
+            {% set parts = currentPath|split('/') %}
+            <a href={{ path('app_file_system_browser', { 'path': '/' }) }} class="text-blue-500 hover:underline">/base</a>
+            {% set accumulatedPath = '' %}
+            {% for part in parts %}
+                {% if part is not empty %}
+                    {% set accumulatedPath = accumulatedPath ~ '/' ~ part %}
+                     <span>/</span>
+                    <a href={{ path('app_file_system_browser', { 'path': accumulatedPath }) }} class="text-blue-500 hover:underline">{{ part }}</a>
+                {% endif %}
+            {% endfor %}
+        </span>
+    </div>
+
+    {# set current path empty if it is the root path #}
+    {% if currentPath == '/' %}
+        {% set currentPath = '' %}
+    {% endif %}
+
+    {# FILES LIST TABLE #}
+    <div class="overflow-auto">
+        <table class="min-w-full">
+            <thead class="card-color border-b border-gray-600">
+                <tr>
+                    <th scope="col" class="text-white px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Name
+                    </th>
+                    <th scope="col" class="text-white px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Size
+                    </th>
+                    <th scope="col" class="text-white px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        Permissions
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="card-color">
+                {% for file in filesystemList %}
+                    <tr class="hover:bg-neutral-800">
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-100 border-b border-neutral-700">
+                            {% if file.isDir %}
+                                <a href={{ path('app_file_system_browser', { 'path': currentPath ~ '/' ~ file.name }) }} class="link font-bold">
+                                    {{ file.name|e }}
+                                </a>
+                            {% else %}
+                                <a href={{ path('app_file_system_view', { 'path': currentPath ~ '/' ~ file.name }) }} class="text-white hover:underline">
+                                    {{ file.name|e }}
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-100 border-b border-neutral-700">{{ file.size|e }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-100 border-b border-neutral-700">{{ file.permissions|e }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
