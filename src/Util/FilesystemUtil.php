@@ -96,38 +96,21 @@ class FilesystemUtil
             return false;
         }
 
-        // get file mime type
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        // get file info
+        $fileInfo = exec('sudo file ' . $path);
 
-        // error to open finfo
-        if (!$finfo) {
+        // check file info is set
+        if (!$fileInfo) {
             // handle the error
             $this->errorManager->handleError(
-                message: 'error opening finfo list: ' . $path . ' mime type detection failed',
-                code: Response::HTTP_INTERNAL_SERVER_ERROR
-            );
-
-            return false;
-        }
-
-        // get the file mime type
-        $mimeType = finfo_file($finfo, $path);
-
-        // close the finfo
-        finfo_close($finfo);
-
-        // check mime type is set
-        if (!$mimeType) {
-            // handle the error
-            $this->errorManager->handleError(
-                message: 'error get file mime type: ' . $path . ' mime type detection failed',
+                message: 'error get file info: ' . $path . ' file info detection failed',
                 code: Response::HTTP_INTERNAL_SERVER_ERROR
             );
             return false;
         }
 
         // check if the file type is supported
-        if (strpos($mimeType, 'executable')) {
+        if (strpos($fileInfo, 'executable')) {
             return true;
         }
 
