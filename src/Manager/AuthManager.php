@@ -4,7 +4,6 @@ namespace App\Manager;
 
 use App\Entity\User;
 use App\Util\AppUtil;
-use App\Util\JsonUtil;
 use App\Util\CacheUtil;
 use App\Util\CookieUtil;
 use App\Util\SessionUtil;
@@ -25,7 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 class AuthManager
 {
     private AppUtil $appUtil;
-    private JsonUtil $jsonUtil;
     private CacheUtil $cacheUtil;
     private LogManager $logManager;
     private CookieUtil $cookieUtil;
@@ -39,7 +37,6 @@ class AuthManager
 
     public function __construct(
         AppUtil $appUtil,
-        JsonUtil $jsonUtil,
         CacheUtil $cacheUtil,
         LogManager $logManager,
         CookieUtil $cookieUtil,
@@ -52,7 +49,6 @@ class AuthManager
         EntityManagerInterface $entityManager
     ) {
         $this->appUtil = $appUtil;
-        $this->jsonUtil = $jsonUtil;
         $this->cacheUtil = $cacheUtil;
         $this->logManager = $logManager;
         $this->cookieUtil = $cookieUtil;
@@ -75,9 +71,7 @@ class AuthManager
     public function isUsernameBlocked(string $username): bool
     {
         // get blocked usernames config file
-        $blockedUsernames = $this->jsonUtil->getJson(
-            $this->appUtil->getAppRootDir() . '/config/suite/blocked-usernames.json'
-        );
+        $blockedUsernames = $this->appUtil->loadConfig('blocked-usernames.json');
 
         // check if blocked usernames config file found
         if ($blockedUsernames == null) {
@@ -164,7 +158,7 @@ class AuthManager
                 $this->logManager->log(
                     name: 'authenticator',
                     message: 'new registration user: ' . $username,
-                    level: 1
+                    level: LogManager::LEVEL_CRITICAL
                 );
             } catch (\Exception $e) {
                 $this->errorManager->handleError(
@@ -270,7 +264,7 @@ class AuthManager
             $this->logManager->log(
                 name: 'authenticator',
                 message: 'invalid login user: ' . $username . ':' . $password,
-                level: 2
+                level: LogManager::LEVEL_CRITICAL
             );
         }
 
@@ -323,7 +317,7 @@ class AuthManager
                 $this->logManager->log(
                     name: 'authenticator',
                     message: 'login user: ' . $username,
-                    level: 1
+                    level: LogManager::LEVEL_CRITICAL
                 );
             } catch (\Exception $e) {
                 $this->errorManager->handleError(
@@ -450,7 +444,7 @@ class AuthManager
             $this->logManager->log(
                 name: 'authenticator',
                 message: 'logout user: ' . $user->getUsername(),
-                level: 1
+                level: LogManager::LEVEL_CRITICAL
             );
 
             // unset login cookie
@@ -498,7 +492,7 @@ class AuthManager
                 $this->logManager->log(
                     name: 'authenticator',
                     message: 'user: ' . $username . ' password reset is success',
-                    level: 2
+                    level: LogManager::LEVEL_CRITICAL
                 );
             } catch (\Exception $e) {
                 $this->errorManager->handleError(
@@ -558,7 +552,7 @@ class AuthManager
         $this->logManager->log(
             name: 'authenticator',
             message: 'regenerate all users tokens',
-            level: 1
+            level: LogManager::LEVEL_WARNING
         );
 
         // return process state output

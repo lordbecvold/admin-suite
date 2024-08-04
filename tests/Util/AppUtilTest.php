@@ -2,11 +2,8 @@
 
 namespace App\Tests\Util;
 
-use Twig\Environment;
 use App\Util\AppUtil;
 use App\Util\JsonUtil;
-use App\Util\ServerUtil;
-use App\Manager\ErrorManager;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -23,12 +20,6 @@ class AppUtilTest extends TestCase
     /** @var AppUtil */
     private AppUtil $appUtil;
 
-    /** @var ServerUtil */
-    private ServerUtil $serverUtil;
-
-    /** @var ErrorManager */
-    private ErrorManager $errorManager;
-
     /** @var KernelInterface */
     private KernelInterface $kernelInterface;
 
@@ -37,13 +28,10 @@ class AppUtilTest extends TestCase
 
     protected function setUp(): void
     {
-        $twigMock = $this->createMock(Environment::class);
-        $this->errorManager = new ErrorManager($twigMock);
         $this->jsonUtilMock = $this->createMock(JsonUtil::class);
         $this->kernelInterface = $this->createMock(KernelInterface::class);
-        $this->serverUtil = new ServerUtil($this->jsonUtilMock, $this->errorManager);
 
-        $this->appUtil = new AppUtil($this->serverUtil, $this->kernelInterface);
+        $this->appUtil = new AppUtil($this->jsonUtilMock, $this->kernelInterface);
     }
 
     /**
@@ -249,30 +237,6 @@ class AppUtilTest extends TestCase
 
         // assert that the config is correct
         $this->assertSame($expectedConfig, $this->appUtil->getHasherConfig());
-    }
-
-    /**
-     * Test get diagnostic data
-     *
-     * @return void
-     */
-    public function testGetDiagnosticData(): void
-    {
-        // get diagnostic data
-        $diagnosticData = $this->appUtil->getDiagnosticData();
-
-        // assert that the result is an array
-        $this->assertIsArray($diagnosticData);
-
-        // assert that the result contains the expected keys
-        $this->assertArrayHasKey('isSSL', $diagnosticData);
-        $this->assertArrayHasKey('cpuUsage', $diagnosticData);
-        $this->assertArrayHasKey('ramUsage', $diagnosticData);
-        $this->assertArrayHasKey('isDevMode', $diagnosticData);
-        $this->assertArrayHasKey('driveSpace', $diagnosticData);
-        $this->assertArrayHasKey('webUsername', $diagnosticData);
-        $this->assertArrayHasKey('isWebUserSudo', $diagnosticData);
-        $this->assertArrayHasKey('notInstalledRequirements', $diagnosticData);
     }
 
     /**

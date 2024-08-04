@@ -34,7 +34,7 @@
         "display_name": "becvar.xyz website",
         "url": "https://becvar.xyz",
         "accept_code": 200,
-        "max_response_time": 1000,
+        "max_response_time": 2000,
         "type": "http",
         "enable": true 
     },
@@ -43,7 +43,7 @@
         "display_name": "nonlizard.xyz website",
         "url": "https://nonlizard.xyz",
         "accept_code": 200,
-        "max_response_time": 1000,
+        "max_response_time": 2000,
         "type": "http",
         "enable": true 
     }

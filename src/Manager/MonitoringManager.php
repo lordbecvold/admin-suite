@@ -171,7 +171,7 @@ class MonitoringManager
             $this->logManager->log(
                 name: 'monitoring',
                 message: $serviceName . ' status: ' . $currentStatus . ' msg: ' . $message,
-                level: 1
+                level: LogManager::LEVEL_WARNING
             );
 
             // update monitoring status

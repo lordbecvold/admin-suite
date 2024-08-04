@@ -67,15 +67,20 @@ class MonitoringProcessCommand extends Command
      */
     private function monitor(SymfonyStyle $io): void
     {
+        // wait to database to be up
+        while ($this->databaseManager->isDatabaseDown()) {
+            $io->writeln('<fg=yellow>Waiting to ensure that the database is up...</>');
+            sleep(10);
+        }
+
+        // flag to handle is database down
         $dbDownFlag = false;
 
-        /** @phpstan-ignore-next-line (infinite monitoring loop) */
+        // infinite monitoring loop
         while (true) {
-            // check database state
-            $databaseDown = $this->databaseManager->isDatabaseDown();
-
-            // check if database down handled before
-            if ($databaseDown) {
+            // check if database is down
+            if ($this->databaseManager->isDatabaseDown()) {
+                // check if database down handled before
                 if (!$dbDownFlag) {
                     // handle database down situation
                     $this->monitoringManager->handleDatabaseDown($io, $dbDownFlag);

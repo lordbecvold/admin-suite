@@ -25,12 +25,12 @@
 
         {# MENU LINKS #}
         <ul class="py-0 text-base">
-            {# BECVAR-SITE LINK #}
+            {# MAIN-SITE LINK #}
             {% set current_url = app.request.getSchemeAndHttpHost() %}
             {% if current_url matches '/admin/' %}
                 {% set new_url = current_url|replace({'admin.': ''}) %}
                 <li>
-                    <a href="{{ new_url }}/admin" class="flex items-center border-b border-gray-600 block px-3"> 
+                    <a href="{{ new_url }}/admin" target="_blank" class="flex items-center border-b border-gray-600 block px-3">
                         <i class="fas fa-globe mrc-2 ml-05"></i>&nbsp;
                         <span>Main site</span>
                     </a>

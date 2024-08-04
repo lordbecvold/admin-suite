@@ -8,7 +8,7 @@
 
     <rule ref="PSR12">
         <properties>
-            <property name="lineLimit" value="N"/>
+            <property namse="lineLimit" value="N"/>
             <property name="absoluteLineLimit" value="M"/>
         </properties>
     </rule>

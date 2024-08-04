@@ -3,7 +3,6 @@
 namespace App\Tests\Manager;
 
 use App\Util\AppUtil;
-use App\Util\JsonUtil;
 use App\Manager\LogManager;
 use App\Manager\AuthManager;
 use App\Manager\ErrorManager;
@@ -23,9 +22,6 @@ class ServiceManagerTest extends TestCase
     /** @var AppUtil|MockObject */
     private AppUtil|MockObject $appUtilMock;
 
-    /** @var JsonUtil|MockObject */
-    private JsonUtil|MockObject $jsonUtilMock;
-
     /** @var ServiceManager */
     private ServiceManager $serviceManager;
 
@@ -41,14 +37,12 @@ class ServiceManagerTest extends TestCase
     protected function setUp(): void
     {
         $this->appUtilMock = $this->createMock(AppUtil::class);
-        $this->jsonUtilMock = $this->createMock(JsonUtil::class);
         $this->logManager = $this->createMock(LogManager::class);
         $this->authManager = $this->createMock(AuthManager::class);
         $this->errorManager = $this->createMock(ErrorManager::class);
 
         $this->serviceManager = new ServiceManager(
             $this->appUtilMock,
-            $this->jsonUtilMock,
             $this->logManager,
             $this->authManager,
             $this->errorManager

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Component;
 
-use App\Util\AppUtil;
+use App\Util\ServerUtil;
 use App\Manager\AuthManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,12 +17,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class DiagnosticController extends AbstractController
 {
-    private AppUtil $appUtil;
+    private ServerUtil $serverUtil;
     private AuthManager $authManager;
 
-    public function __construct(AppUtil $appUtil, AuthManager $authManager)
+    public function __construct(ServerUtil $serverUtil, AuthManager $authManager)
     {
-        $this->appUtil = $appUtil;
+        $this->serverUtil = $serverUtil;
         $this->authManager = $authManager;
     }
 
@@ -35,7 +35,7 @@ class DiagnosticController extends AbstractController
     public function diagnosticPage(): Response
     {
         // get diagnostic data
-        $diagnosticData = $this->appUtil->getDiagnosticData();
+        $diagnosticData = $this->serverUtil->getDiagnosticData();
 
         // return diagnostic view
         return $this->render('component/diagnostic/diagnostics-page.twig', [

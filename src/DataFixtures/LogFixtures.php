@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use Faker\Factory;
 use App\Entity\Log;
+use App\Manager\LogManager;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
@@ -38,6 +39,7 @@ class LogFixtures extends Fixture
                 ->setUserAgent($faker->userAgent)
                 ->setIpAdderss($faker->ipv4)
                 ->setStatus('UNREADED')
+                ->setLevel(LogManager::LEVEL_CRITICAL)
                 ->setUserId(1);
 
             // save the log

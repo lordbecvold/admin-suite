@@ -2,7 +2,6 @@
 
 namespace App\Controller\Component;
 
-use App\Util\AppUtil;
 use App\Util\ServerUtil;
 use App\Manager\BanManager;
 use App\Manager\LogManager;
@@ -22,7 +21,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class DashboardController extends AbstractController
 {
-    private AppUtil $appUtil;
     private ServerUtil $serverUtil;
     private LogManager $logManager;
     private BanManager $banManager;
@@ -31,7 +29,6 @@ class DashboardController extends AbstractController
     private ServiceManager $serviceManager;
 
     public function __construct(
-        AppUtil $appUtil,
         ServerUtil $serverUtil,
         LogManager $logManager,
         BanManager $banManager,
@@ -39,7 +36,6 @@ class DashboardController extends AbstractController
         AuthManager $authManager,
         ServiceManager $serviceManager
     ) {
-        $this->appUtil = $appUtil;
         $this->serverUtil = $serverUtil;
         $this->logManager = $logManager;
         $this->banManager = $banManager;
@@ -57,7 +53,7 @@ class DashboardController extends AbstractController
     public function dashboard(): Response
     {
         // get warning data
-        $diagnosticData = $this->appUtil->getDiagnosticData();
+        $diagnosticData = $this->serverUtil->getDiagnosticData();
         $antiLogStatus = $this->logManager->isAntiLogEnabled();
 
         // get host system info

@@ -102,7 +102,7 @@ class DatabaseManager
             $this->logManager->log(
                 name: 'database-manager',
                 message: 'get databases list',
-                level: 3
+                level: LogManager::LEVEL_NOTICE
             );
         } catch (\Exception $e) {
             $this->errorManager->handleError(
@@ -194,7 +194,7 @@ class DatabaseManager
             $this->logManager->log(
                 name: 'database-manager',
                 message: 'get tables list',
-                level: 3
+                level: LogManager::LEVEL_NOTICE
             );
 
             return $tablesWithRows;
@@ -329,7 +329,7 @@ class DatabaseManager
             $this->logManager->log(
                 name: 'database-manager',
                 message: 'get table: ' . $tableName . ' data',
-                level: 3
+                level: LogManager::LEVEL_NOTICE
             );
 
             return $stmt->fetchAllAssociative();
@@ -540,7 +540,7 @@ class DatabaseManager
             $this->logManager->log(
                 name: 'database-manager',
                 message: 'add row to table: ' . $tableName,
-                level: 3
+                level: LogManager::LEVEL_NOTICE
             );
         } catch (\Exception $e) {
             $this->errorManager->handleError(
@@ -588,7 +588,7 @@ class DatabaseManager
             $this->logManager->log(
                 name: 'database-manager',
                 message: "Updated row with ID: $id in table: $tableName in database: $databaseName",
-                level: 3
+                level: LogManager::LEVEL_NOTICE
             );
         } catch (\Exception $e) {
             $this->errorManager->handleError(
@@ -624,7 +624,7 @@ class DatabaseManager
             $this->logManager->log(
                 name: 'database-manager',
                 message: "deleted row with ID: $id from table: $tableName in database: $dbName",
-                level: 3
+                level: LogManager::LEVEL_NOTICE
             );
 
             return true;
@@ -659,7 +659,7 @@ class DatabaseManager
             $this->logManager->log(
                 name: 'database-manager',
                 message: "truncated table: $tableName in database: $dbName",
-                level: 3
+                level: LogManager::LEVEL_CRITICAL
             );
         } catch (\Exception $e) {
             $this->errorManager->handleError(
@@ -736,7 +736,7 @@ class DatabaseManager
             $this->logManager->log(
                 name: 'database-manager',
                 message: 'get database dump',
-                level: 1
+                level: LogManager::LEVEL_CRITICAL
             );
         } catch (\Exception $e) {
             $this->errorManager->handleError(
@@ -810,7 +810,7 @@ class DatabaseManager
             $this->logManager->log(
                 name: 'database-manager',
                 message: 'Executed query',
-                level: 3
+                level: LogManager::LEVEL_NOTICE
             );
 
             return $result;

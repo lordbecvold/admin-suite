@@ -73,7 +73,7 @@ class BanManager
         $this->logManager->log(
             name: 'ban-manager',
             message: 'user: ' . $userId . ' has been banned',
-            level: 1
+            level: LogManager::LEVEL_WARNING
         );
     }
 
@@ -153,7 +153,7 @@ class BanManager
             $this->logManager->log(
                 name: 'ban-manager',
                 message: 'user: ' . $userId . ' is unbanned',
-                level: 1
+                level: LogManager::LEVEL_WARNING
             );
         }
     }

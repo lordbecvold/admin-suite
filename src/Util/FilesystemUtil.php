@@ -166,7 +166,7 @@ class FilesystemUtil
             }
 
             // get the file content
-            $fileContent = file_get_contents($path);
+            $fileContent = shell_exec('cat ' . escapeshellarg($path));
 
             // check file content is set
             if (!$fileContent) {
@@ -182,7 +182,7 @@ class FilesystemUtil
             $this->logManager->log(
                 name: 'file-browser',
                 message: 'file ' . $path . ' accessed',
-                level: 3
+                level: LogManager::LEVEL_INFO
             );
 
             // return the file content

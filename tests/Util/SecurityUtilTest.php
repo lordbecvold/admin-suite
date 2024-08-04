@@ -2,12 +2,9 @@
 
 namespace App\Tests\Util;
 
-use Twig\Environment;
-use App\Util\JsonUtil;
 use App\Util\AppUtil;
-use App\Util\ServerUtil;
+use App\Util\JsonUtil;
 use App\Util\SecurityUtil;
-use App\Manager\ErrorManager;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -21,30 +18,21 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class SecurityUtilTest extends TestCase
 {
-    /** @var ServerUtil */
-    private ServerUtil $serverUtil;
-
     /** @var SecurityUtil */
     private SecurityUtil $securityUtil;
-
-    /** @var ErrorManager */
-    private ErrorManager $errorManager;
-
-    /** @var KernelInterface */
-    private KernelInterface $kernelInterface;
 
     /** @var JsonUtil|MockObject */
     private JsonUtil|MockObject $jsonUtilMock;
 
+    /** @var KernelInterface|MockObject */
+    private KernelInterface|MockObject $kernelInterface;
+
     protected function setUp(): void
     {
-        $twigMock = $this->createMock(Environment::class);
-        $this->errorManager = new ErrorManager($twigMock);
         $this->jsonUtilMock = $this->createMock(JsonUtil::class);
         $this->kernelInterface = $this->createMock(KernelInterface::class);
-        $this->serverUtil = new ServerUtil($this->jsonUtilMock, $this->errorManager);
 
-        $this->securityUtil = new SecurityUtil(new AppUtil($this->serverUtil, $this->kernelInterface));
+        $this->securityUtil = new SecurityUtil(new AppUtil($this->jsonUtilMock, $this->kernelInterface));
     }
 
     /**

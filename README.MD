@@ -9,10 +9,18 @@
 ![Dashboard](.github/assets/preview.png)
 
 ## ROADMAP
-- [ ] Terminal
-- [ ] Better config load (primary & secondary)
-- [ ] Functional improvements
-- [ ] Internal improvements
+- [ ] External log API
+    - [ ] Log event API
+    - [ ] Protect with external log token
+    - [ ] Connect to becvar-site log manager
+- [ ] Sort logs by category (LEVEL)
+- [ ] Component disable/enable config
+    - [ ] Default enable all components
+    - [ ] Disable specific component (by controller or route name)
+- [ ] Docker support (service type docker)
+- [ ] System resources usage history graph
+- [ ] Simple chat component
+- [ ] Terminal component
 
 ## Code base
 This project is based on the Symfony framework. The entire project is designed to require as few dependencies and additional software as possible for easy installation and maintenance.
@@ -36,9 +44,9 @@ Installation is very simple like any other PHP project.
 * Create user with console command or web interface (webinterface allows to create user if users table is empty)
 
 ## Configuration
+* You can edit the config files directly in config/suite but it is better to create your own in the project root because these files will be loaded primarily and ignored by git when using the pull for update with scripts/upgrade.sh
 * Configure your package-requitements.json & services.json in root file (for example use config/suite files)
 * Create systemd or screen service for monitoring process (console command infinite loop) ([systemd-config](https://github.com/lordbecvold/admin-suite/blob/main/_docker/configs/systemd.service))
-* You can edit the config files directly in config/suite but it is better to create your own in the project root because these files will be loaded primarily and ignored by git when using the pull for update
 
 ## Contributing
 Contributions are welcome! Please fork this repository and submit pull requests for any features, bug fixes, or enhancements. If you have any questions or need help, feel free to open an issue or contact me directly.

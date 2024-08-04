@@ -65,7 +65,7 @@ class BannedCheckMiddleware
                 $this->logManager->log(
                     name: 'ban-manager',
                     message: 'banned user trying to access page',
-                    level: 3
+                    level: LogManager::LEVEL_CRITICAL
                 );
 
                 $response = new Response($content, Response::HTTP_FORBIDDEN);

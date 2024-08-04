@@ -3,7 +3,6 @@
 namespace App\Manager;
 
 use App\Util\AppUtil;
-use App\Util\JsonUtil;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -16,20 +15,17 @@ use Symfony\Component\HttpFoundation\Response;
 class ServiceManager
 {
     private AppUtil $appUtil;
-    private JsonUtil $jsonUtil;
     private LogManager $logManager;
     private AuthManager $authManager;
     private ErrorManager $errorManager;
 
     public function __construct(
         AppUtil $appUtil,
-        JsonUtil $jsonUtil,
         LogManager $logManager,
         AuthManager $authManager,
         ErrorManager $errorManager
     ) {
         $this->appUtil = $appUtil;
-        $this->jsonUtil = $jsonUtil;
         $this->logManager = $logManager;
         $this->authManager = $authManager;
         $this->errorManager = $errorManager;
@@ -42,15 +38,7 @@ class ServiceManager
      */
     public function getServicesList(): ?array
     {
-        // default example config path
-        $configPath = $this->appUtil->getAppRootDir() . '/config/suite/services.json';
-
-        // set config path
-        if (file_exists($this->appUtil->getAppRootDir() . '/services.json')) {
-            $configPath = $this->appUtil->getAppRootDir() . '/services.json';
-        }
-
-        return $this->jsonUtil->getJson($configPath);
+        return $this->appUtil->loadConfig('services.json');
     }
 
     /**
@@ -79,7 +67,11 @@ class ServiceManager
             $user = $this->authManager->getLoggedUserRepository();
 
             // log action
-            $this->logManager->log('action-runner', $user->getUsername() . ' ' . $action . ' ' . $serviceName, 1);
+            $this->logManager->log(
+                name: 'action-runner',
+                message: $user->getUsername() . ' ' . $action . ' ' . $serviceName,
+                level: LogManager::LEVEL_WARNING
+            );
 
             // executed final command
             $this->executeCommand($command);

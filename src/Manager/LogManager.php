@@ -4,7 +4,6 @@ namespace App\Manager;
 
 use App\Entity\Log;
 use App\Util\AppUtil;
-use App\Util\JsonUtil;
 use App\Util\CookieUtil;
 use App\Util\SessionUtil;
 use App\Util\VisitorInfoUtil;
@@ -21,8 +20,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class LogManager
 {
+    // log levels constants
+    public const LEVEL_CRITICAL = 1;
+    public const LEVEL_WARNING = 2;
+    public const LEVEL_NOTICE = 3;
+    public const LEVEL_INFO = 4;
+
     private AppUtil $appUtil;
-    private JsonUtil $jsonUtil;
     private CookieUtil $cookieUtil;
     private SessionUtil $sessionUtil;
     private ErrorManager $errorManager;
@@ -31,7 +35,6 @@ class LogManager
 
     public function __construct(
         AppUtil $appUtil,
-        JsonUtil $jsonUtil,
         CookieUtil $cookieUtil,
         SessionUtil $sessionUtil,
         ErrorManager $errorManager,
@@ -39,7 +42,6 @@ class LogManager
         EntityManagerInterface $entityManager
     ) {
         $this->appUtil = $appUtil;
-        $this->jsonUtil = $jsonUtil;
         $this->cookieUtil = $cookieUtil;
         $this->sessionUtil = $sessionUtil;
         $this->errorManager = $errorManager;
@@ -98,7 +100,8 @@ class LogManager
             ->setStatus('UNREADED')
             ->setUserAgent($userAgent)
             ->setIpAdderss($ipAddress)
-            ->setTime(new \DateTime());
+            ->setTime(new \DateTime())
+            ->setLevel($level);
 
             // set user id if user logged in
             $userId = $this->sessionUtil->getSessionValue('user-identifier', 0);
@@ -127,7 +130,7 @@ class LogManager
     public function setAntiLog(): void
     {
         // log action
-        $this->log('anti-log', 'anti-log enabled');
+        $this->log('anti-log', 'anti-log enabled', self::LEVEL_WARNING);
 
         // set the anti-log cookie
         $this->cookieUtil->set(
@@ -144,11 +147,11 @@ class LogManager
      */
     public function unSetAntiLog(): void
     {
+        // log action
+        $this->log('anti-log', 'anti-log disabled', self::LEVEL_WARNING);
+
         // unset the anti-log cookie
         $this->cookieUtil->unset('anti-log');
-
-        // log action
-        $this->log('anti-log', 'anti-log disabled');
     }
 
     /**
@@ -254,7 +257,7 @@ class LogManager
         }
 
         // log action
-        $this->log('log-manager', strtolower($status) . ' logs viewed', level: 3);
+        $this->log('log-manager', strtolower($status) . ' logs viewed', self::LEVEL_NOTICE);
 
         return $logs;
     }
@@ -389,7 +392,7 @@ class LogManager
         }
 
         // log action
-        $this->log('log-manager', 'system logs viewed', level: 3);
+        $this->log('log-manager', 'system logs viewed', self::LEVEL_NOTICE);
 
         // return log files
         return $logFiles;
@@ -430,7 +433,7 @@ class LogManager
         $this->log(
             name: 'log-manager',
             message: 'system log: ' . $logFile . ' viewed',
-            level: 3
+            level: self::LEVEL_NOTICE
         );
 
         // return log content
@@ -446,17 +449,9 @@ class LogManager
     {
         $files = [];
 
-        // defualt config file path
-        $configFile = __DIR__ . '/../../exception-files.json';
-
-        // check if config file exists
-        if (!file_exists($configFile)) {
-            $configFile = __DIR__ . '/../../config/suite/exception-files.json';
-        }
-
         try {
             /** @var array<string,array<string,string>> $exceptionFiles list of exception files */
-            $exceptionFiles = $this->jsonUtil->getJson($configFile);
+            $exceptionFiles = $this->appUtil->loadConfig('exception-files.json');
 
             if (!is_array($exceptionFiles)) {
                 $this->errorManager->handleError(
@@ -510,7 +505,7 @@ class LogManager
                     $this->log(
                         name: 'log-manager',
                         message: 'exception file deleted: ' . $exceptionFile,
-                        level: 1
+                        level: self::LEVEL_CRITICAL
                     );
                 }
             }

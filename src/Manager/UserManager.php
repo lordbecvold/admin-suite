@@ -206,7 +206,7 @@ class UserManager
                 $this->logManager->log(
                     name: 'user-manager',
                     message: 'update role (' . $role . ') for user: ' . $repo->getUsername(),
-                    level: 1
+                    level: LogManager::LEVEL_WARNING
                 );
             } catch (\Exception $e) {
                 $this->errorManager->handleError(
@@ -266,7 +266,7 @@ class UserManager
                 $this->logManager->log(
                     name: 'user-manager',
                     message: 'user: ' . $repo->getUsername() . ' deleted',
-                    level: 1
+                    level: LogManager::LEVEL_WARNING
                 );
             } catch (\Exception $e) {
                 $this->errorManager->handleError(
@@ -308,7 +308,7 @@ class UserManager
                 $this->logManager->log(
                     name: 'account-settings',
                     message: 'update username (' . $newUsername . ') for user: ' . $oldUsername,
-                    level: 1
+                    level: LogManager::LEVEL_INFO
                 );
             } catch (\Exception $e) {
                 $this->errorManager->handleError(
@@ -350,7 +350,7 @@ class UserManager
                 $this->logManager->log(
                     name: 'account-settings',
                     message: 'update password for user: ' . $repo->getUsername(),
-                    level: 3
+                    level: LogManager::LEVEL_INFO
                 );
             } catch (\Exception $e) {
                 $this->errorManager->handleError(
@@ -389,7 +389,7 @@ class UserManager
                 $this->logManager->log(
                     name: 'account-settings',
                     message: 'update profile picture for user: ' . $repo->getUsername(),
-                    level: 3
+                    level: LogManager::LEVEL_INFO
                 );
             } catch (\Exception $e) {
                 $this->errorManager->handleError(

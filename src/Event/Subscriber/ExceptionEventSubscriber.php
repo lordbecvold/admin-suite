@@ -68,7 +68,7 @@ class ExceptionEventSubscriber implements EventSubscriberInterface
         if ($this->canBeEventLogged($message)) {
             // log the exception to admin-suite database
             if (!$this->databaseManager->isDatabaseDown()) {
-                $this->logManager->log('exception', $message, 1);
+                $this->logManager->log('exception', $message, LogManager::LEVEL_CRITICAL);
             }
         }
 

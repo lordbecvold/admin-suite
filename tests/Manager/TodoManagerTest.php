@@ -108,7 +108,7 @@ class TodoManagerTest extends TestCase
 
         $this->logManagerMock->expects($this->once())
             ->method('log')
-            ->with('todo-manager', 'new todo created', 3);
+            ->with('todo-manager', 'new todo created', 4);
 
         $this->entityManagerMock->expects($this->once())
             ->method('persist')
@@ -149,7 +149,7 @@ class TodoManagerTest extends TestCase
 
         $this->logManagerMock->expects($this->once())
             ->method('log')
-            ->with('todo-manager', 'todo edited', 3);
+            ->with('todo-manager', 'todo edited', 4);
 
         $this->entityManagerMock->expects($this->once())
             ->method('persist')
@@ -187,7 +187,7 @@ class TodoManagerTest extends TestCase
 
         $this->logManagerMock->expects($this->once())
             ->method('log')
-            ->with('todo-manager', 'todo closed', 3);
+            ->with('todo-manager', 'todo closed', 4);
 
         $this->entityManagerMock->expects($this->once())
             ->method('persist')

@@ -38,6 +38,9 @@ class Log
     private ?string $ip_adderss = null;
 
     #[ORM\Column]
+    private ?int $level = null;
+
+    #[ORM\Column]
     private ?int $user_id = null;
 
     #[ORM\Column(length: 255)]
@@ -174,6 +177,30 @@ class Log
     public function setIpAdderss(string $ip_adderss): static
     {
         $this->ip_adderss = $ip_adderss;
+
+        return $this;
+    }
+
+    /**
+     * Get the level of the log
+     *
+     * @return int|null The level of the log or null if not found
+     */
+    public function getLevel(): ?int
+    {
+        return $this->level;
+    }
+
+    /**
+     * Set the level of the log
+     *
+     * @param int|null $level The level of the log
+     *
+     * @return static The current object
+     */
+    public function setLevel(?int $level): static
+    {
+        $this->level = $level;
 
         return $this;
     }

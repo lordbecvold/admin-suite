@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Util;
 
-use App\Util\JsonUtil;
+use App\Util\AppUtil;
 use App\Util\ServerUtil;
 use App\Manager\ErrorManager;
 use PHPUnit\Framework\TestCase;
@@ -23,17 +23,17 @@ class ServerUtilTest extends TestCase
     /** @var ErrorManager */
     private ErrorManager $errorManager;
 
-    /** @var JsonUtil|MockObject */
-    private JsonUtil|MockObject $jsonUtilMock;
+    /** @var AppUtil|MockObject */
+    private AppUtil|MockObject $appUtilMock;
 
     protected function setUp(): void
     {
         // create mock error manager
-        $this->jsonUtilMock = $this->createMock(JsonUtil::class);
+        $this->appUtilMock = $this->createMock(AppUtil::class);
         $this->errorManager = $this->createMock(ErrorManager::class);
 
         // create instance of ServerUtil
-        $this->serverUtil = new ServerUtil($this->jsonUtilMock, $this->errorManager);
+        $this->serverUtil = new ServerUtil($this->appUtilMock, $this->errorManager);
         parent::setUp();
     }
 
@@ -183,5 +183,29 @@ class ServerUtilTest extends TestCase
 
         // assert that the result is an array
         $this->assertIsArray($processList);
+    }
+
+    /**
+     * Test get diagnostic data
+     *
+     * @return void
+     */
+    public function testGetDiagnosticData(): void
+    {
+        // get diagnostic data
+        $diagnosticData = $this->serverUtil->getDiagnosticData();
+
+        // assert that the result is an array
+        $this->assertIsArray($diagnosticData);
+
+        // assert that the result contains the expected keys
+        $this->assertArrayHasKey('isSSL', $diagnosticData);
+        $this->assertArrayHasKey('cpuUsage', $diagnosticData);
+        $this->assertArrayHasKey('ramUsage', $diagnosticData);
+        $this->assertArrayHasKey('isDevMode', $diagnosticData);
+        $this->assertArrayHasKey('driveSpace', $diagnosticData);
+        $this->assertArrayHasKey('webUsername', $diagnosticData);
+        $this->assertArrayHasKey('isWebUserSudo', $diagnosticData);
+        $this->assertArrayHasKey('notInstalledRequirements', $diagnosticData);
     }
 }

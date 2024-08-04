@@ -14,12 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ServerUtil
 {
-    private JsonUtil $jsonUtil;
+    private AppUtil $appUtil;
     private ErrorManager $errorManager;
 
-    public function __construct(JsonUtil $jsonUtil, ErrorManager $errorManager)
+    public function __construct(AppUtil $appUtil, ErrorManager $errorManager)
     {
-        $this->jsonUtil = $jsonUtil;
+        $this->appUtil = $appUtil;
         $this->errorManager = $errorManager;
     }
 
@@ -312,16 +312,8 @@ class ServerUtil
     {
         $notFoundApps = [];
 
-        // default example config path
-        $configPath = __DIR__ . '/../../config/suite/package-requirements.json';
-
-        // set config path
-        if (file_exists(__DIR__ . '/../../package-requirements.json')) {
-            $configPath = __DIR__ . '/../../package-requirements.json';
-        }
-
         /** @var array<string> $appList get list of required apps */
-        $appList = $this->jsonUtil->getJson($configPath);
+        $appList = $this->appUtil->loadConfig('package-requirements.json');
 
         if (is_iterable($appList)) {
             // check if app is installed
@@ -413,5 +405,34 @@ class ServerUtil
         }
 
         return $processes;
+    }
+
+    /**
+     * Get diagnostic data
+     *
+     * @return array<string,mixed> The diagnostic data
+     */
+    public function getDiagnosticData(): array
+    {
+        // get diagnostic data
+        $isSSL = $this->appUtil->isSsl();
+        $isDevMode = $this->appUtil->isDevMode();
+        $cpuUsage = $this->getCpuUsage();
+        $webUsername = $this->getWebUsername();
+        $isWebUserSudo = $this->isWebUserSudo();
+        $ramUsage = $this->getRamUsagePercentage();
+        $driveSpace = $this->getDriveUsagePercentage();
+        $notInstalledRequirements = $this->getNotInstalledRequirements();
+
+        return [
+            'isSSL' => $isSSL,
+            'cpuUsage' => $cpuUsage,
+            'ramUsage' => $ramUsage,
+            'isDevMode' => $isDevMode,
+            'driveSpace' => $driveSpace,
+            'webUsername' => $webUsername,
+            'isWebUserSudo' => $isWebUserSudo,
+            'notInstalledRequirements' => $notInstalledRequirements
+        ];
     }
 }

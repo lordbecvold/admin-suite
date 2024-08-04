@@ -13,12 +13,14 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class AppUtil
 {
-    private ServerUtil $serverUtil;
+    private JsonUtil $jsonUtil;
     private KernelInterface $kernelInterface;
 
-    public function __construct(ServerUtil $serverUtil, KernelInterface $kernelInterface)
-    {
-        $this->serverUtil = $serverUtil;
+    public function __construct(
+        JsonUtil $jsonUtil,
+        KernelInterface $kernelInterface
+    ) {
+        $this->jsonUtil = $jsonUtil;
         $this->kernelInterface = $kernelInterface;
     }
 
@@ -179,6 +181,29 @@ class AppUtil
     }
 
     /**
+     * Load config file
+     *
+     * @param string $configFile The config file to load
+     *
+     * @return array<mixed>|null The config file content, null if the file does not exist
+     */
+    public function loadConfig(string $configFile): ?array
+    {
+        // default example config path
+        $configPath = $this->getAppRootDir() . '/config/suite/' . $configFile;
+
+        // set config path
+        if (file_exists($this->getAppRootDir() . '/' . $configFile)) {
+            $configPath = $this->getAppRootDir() . '/' . $configFile;
+        }
+
+        // load config file
+        $config = $this->jsonUtil->getJson($configPath);
+
+        return $config;
+    }
+
+    /**
      * Calculate the maximum number of pages
      *
      * @param ?int $totalItems The total number of items
@@ -198,34 +223,5 @@ class AppUtil
 
         // return the maximum number of pages
         return $maxPages;
-    }
-
-    /**
-     * Get diagnostic data
-     *
-     * @return array<string,mixed> The diagnostic data
-     */
-    public function getDiagnosticData(): array
-    {
-        // get diagnostic data
-        $isSSL = $this->isSsl();
-        $isDevMode = $this->isDevMode();
-        $cpuUsage = $this->serverUtil->getCpuUsage();
-        $webUsername = $this->serverUtil->getWebUsername();
-        $isWebUserSudo = $this->serverUtil->isWebUserSudo();
-        $ramUsage = $this->serverUtil->getRamUsagePercentage();
-        $driveSpace = $this->serverUtil->getDriveUsagePercentage();
-        $notInstalledRequirements = $this->serverUtil->getNotInstalledRequirements();
-
-        return [
-            'isSSL' => $isSSL,
-            'cpuUsage' => $cpuUsage,
-            'ramUsage' => $ramUsage,
-            'isDevMode' => $isDevMode,
-            'driveSpace' => $driveSpace,
-            'webUsername' => $webUsername,
-            'isWebUserSudo' => $isWebUserSudo,
-            'notInstalledRequirements' => $notInstalledRequirements
-        ];
     }
 }

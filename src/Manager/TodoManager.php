@@ -129,7 +129,7 @@ class TodoManager
             $this->logManager->log(
                 name: 'todo-manager',
                 message: 'new todo created',
-                level: 3
+                level: LogManager::LEVEL_INFO
             );
         } catch (\Exception $e) {
             $this->errorManager->handleError(
@@ -192,7 +192,7 @@ class TodoManager
             $this->logManager->log(
                 name: 'todo-manager',
                 message: 'todo edited',
-                level: 3
+                level: LogManager::LEVEL_INFO
             );
         } catch (\Exception $e) {
             $this->errorManager->handleError(
@@ -251,7 +251,7 @@ class TodoManager
             $this->logManager->log(
                 name: 'todo-manager',
                 message: 'todo closed',
-                level: 3
+                level: LogManager::LEVEL_INFO
             );
         } catch (\Exception $e) {
             $this->errorManager->handleError(
@@ -305,7 +305,7 @@ class TodoManager
                 $this->logManager->log(
                     name: 'todo-manager',
                     message: 'todo deleted',
-                    level: 3
+                    level: LogManager::LEVEL_INFO
                 );
             }
         } catch (\Exception $e) {
