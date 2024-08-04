@@ -166,7 +166,7 @@ class FilesystemUtil
             }
 
             // get the file content
-            $fileContent = shell_exec('cat ' . escapeshellarg($path));
+            $fileContent = shell_exec('sudo cat ' . escapeshellarg($path));
 
             // check file content is set
             if (!$fileContent) {
