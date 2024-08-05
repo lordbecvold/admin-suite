@@ -9,10 +9,6 @@
 ![Dashboard](.github/assets/preview.png)
 
 ## ROADMAP
-- [ ] External log API
-    - [ ] Log event API
-    - [ ] Protect with external log token
-    - [ ] Connect to becvar-site log manager
 - [ ] Component disable/enable config
     - [ ] Default enable all components
     - [ ] Disable specific component (by controller or route name)

@@ -167,6 +167,16 @@ class AppUtil
     }
 
     /**
+     * Get the external API log token
+     *
+     * @return string The external API log token
+     */
+    public function getExternalApiLogToken(): string
+    {
+        return $_ENV['EXTERNAL_API_LOG_TOKEN'];
+    }
+
+    /**
      * Get the hasher configuration
      *
      * @return array<int> The hasher configuration
