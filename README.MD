@@ -13,7 +13,6 @@
     - [ ] Log event API
     - [ ] Protect with external log token
     - [ ] Connect to becvar-site log manager
-- [ ] Sort logs by category (LEVEL)
 - [ ] Component disable/enable config
     - [ ] Default enable all components
     - [ ] Disable specific component (by controller or route name)
