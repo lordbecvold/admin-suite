@@ -9,7 +9,6 @@
 ![Dashboard](.github/assets/preview.png)
 
 ## ROADMAP
-- [ ] System resources usage history graph
 - [ ] Simple chat component
 - [ ] Terminal component
 
