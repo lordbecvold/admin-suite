@@ -3,9 +3,6 @@
 # clean app cache
 php bin/console cache:clear
 
-# delete old migrations
-rm -rf migrations/
-
 # delete composer files
 rm -rf vendor/
 rm -rf composer.lock
