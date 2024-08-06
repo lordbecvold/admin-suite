@@ -124,31 +124,14 @@ class AppUtilTest extends TestCase
     }
 
     /**
-     * Test get log level
+     * Test get environment variable value
      *
      * @return void
      */
-    public function testGetLogLevel(): void
+    public function testGetEnvValue(): void
     {
-        $_ENV['LOG_LEVEL'] = '1';
-        $this->assertSame(1, $this->appUtil->getLogLevel());
-
-        $_ENV['LOG_LEVEL'] = '2';
-        $this->assertSame(2, $this->appUtil->getLogLevel());
-    }
-
-    /**
-     * Test get hasher config
-     *
-     * @return void
-     */
-    public function testPageLimiter(): void
-    {
-        // get page limitter
-        $limit = $this->appUtil->getPageLimiter();
-
-        // check if limit is valid
-        $this->assertSame($limit, (int) $_ENV['LIMIT_CONTENT_PER_PAGE']);
+        $_ENV['TEST_KEY'] = 'test-value';
+        $this->assertSame('test-value', $this->appUtil->getEnvValue('TEST_KEY'));
     }
 
     /**
@@ -163,44 +146,6 @@ class AppUtilTest extends TestCase
 
         // check if max pages is valid
         $this->assertSame($maxPages, 10);
-    }
-
-    /**
-     * Test get admin contact email
-     *
-     * @return void
-     */
-    public function testGetAdminContactEmail(): void
-    {
-        $_ENV['ADMIN_CONTACT'] = 'admin@example.com';
-        $this->assertSame('admin@example.com', $this->appUtil->getAdminContactEmail());
-
-        $_ENV['ADMIN_CONTACT'] = 'support@example.com';
-        $this->assertSame('support@example.com', $this->appUtil->getAdminContactEmail());
-    }
-
-    /**
-     * Test get system logs directory
-     *
-     * @return void
-     */
-    public function getGetSystemLogsDirectory(): void
-    {
-        $this->assertSame('/var/log', $this->appUtil->getSystemLogsDirectory());
-    }
-
-    /**
-     * Test get anti log token
-     *
-     * @return void
-     */
-    public function testGetAntiLogToken(): void
-    {
-        $_ENV['ANTI_LOG_TOKEN'] = 'secret-token';
-        $this->assertSame('secret-token', $this->appUtil->getAntiLogToken());
-
-        $_ENV['ANTI_LOG_TOKEN'] = 'another-token';
-        $this->assertSame('another-token', $this->appUtil->getAntiLogToken());
     }
 
     /**
@@ -237,15 +182,5 @@ class AppUtilTest extends TestCase
 
         // assert that the config is correct
         $this->assertSame($expectedConfig, $this->appUtil->getHasherConfig());
-    }
-
-    /**
-     * Test get monitoring interval
-     *
-     * @return void
-     */
-    public function testGetMonitoringInterval(): void
-    {
-        $this->assertSame(5, $this->appUtil->getMonitoringInterval());
     }
 }

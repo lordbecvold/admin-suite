@@ -161,7 +161,7 @@ class MonitoringManager
         if ($lastStatus != $currentStatus) {
             // send monitoring status email
             $this->emailManager->sendMonitoringStatusEmail(
-                $this->appUtil->getAdminContactEmail(),
+                $this->appUtil->getEnvValue('ADMIN_CONTACT'),
                 $serviceName,
                 $message,
                 $currentStatus
@@ -192,7 +192,7 @@ class MonitoringManager
         // check if database is down flag is set
         if ($databaseDown == false) {
             $this->emailManager->sendMonitoringStatusEmail(
-                recipient: $this->appUtil->getAdminContactEmail(),
+                recipient: $this->appUtil->getEnvValue('ADMIN_CONTACT'),
                 serviceName: 'Mysql',
                 message: 'Mysql server down detected',
                 currentStatus: 'critical'

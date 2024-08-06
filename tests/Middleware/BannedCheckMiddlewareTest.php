@@ -59,7 +59,7 @@ class BannedCheckMiddlewareTest extends TestCase
      */
     public function testRequestUserBanned(): void
     {
-        $this->appUtil->method('getAdminContactEmail')->willReturn('admin@example.com');
+        $this->appUtil->method('getEnvValue')->willReturn('admin@example.com');
         $this->authManager->method('isUserLogedin')->willReturn(true);
         $this->authManager->method('getLoggedUserId')->willReturn(1);
         $this->banManager->method('isUserBanned')->with(1)->willReturn(true);

@@ -61,7 +61,7 @@ class UsersManagerController extends AbstractController
         $page = (int) $request->query->get('page', '1');
 
         // get page limit from config
-        $pageLimit = $this->appUtil->getPageLimiter();
+        $pageLimit = $this->appUtil->getEnvValue('LIMIT_CONTENT_PER_PAGE');
 
         // get filter from request query params
         $filter = $request->query->get('filter', '');
@@ -76,7 +76,7 @@ class UsersManagerController extends AbstractController
         $onlineList = $this->authManager->getOnlineUsersList();
 
         // get admin suite database name
-        $mainDatabase = $this->appUtil->getMainDatabaseName();
+        $mainDatabase = $this->appUtil->getEnvValue('DATABASE_NAME');
 
         // get current visitor ip (for highlight current user)
         $currentVisitorIp = $this->visitorInfoUtil->getIp();
@@ -186,7 +186,7 @@ class UsersManagerController extends AbstractController
     public function userRegister(Request $request): Response
     {
         // get page limit from config
-        $pageLimit = $this->appUtil->getPageLimiter();
+        $pageLimit = (int) $this->appUtil->getEnvValue('LIMIT_CONTENT_PER_PAGE');
 
         // get total users count from database
         $usersCount = $this->userManager->getUsersCount();

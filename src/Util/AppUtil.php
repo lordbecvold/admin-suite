@@ -55,33 +55,15 @@ class AppUtil
     }
 
     /**
-     * Get admin contact email address
-     *
-     * @return string The admin contact email address
-     */
-    public function getAdminContactEmail(): string
-    {
-        return $_ENV['ADMIN_CONTACT'];
-    }
-
-    /**
-     * Get system log directory path
-     *
-     * @return string The system log directory
-     */
-    public function getSystemLogsDirectory(): string
-    {
-        return $_ENV['SYSTEM_LOGS_DIR'];
-    }
-
-    /**
      * Check if the application is in development mode
      *
      * @return bool True if the application is in development mode, false otherwise
      */
     public function isDevMode(): bool
     {
-        if ($_ENV['APP_ENV'] == 'dev' || $_ENV['APP_ENV'] == 'test') {
+        $envName = $this->getEnvValue('APP_ENV');
+
+        if ($envName == 'dev' || $envName == 'test') {
             return true;
         }
 
@@ -95,7 +77,7 @@ class AppUtil
      */
     public function isSSLOnly(): bool
     {
-        return $_ENV['SSL_ONLY'] === 'true';
+        return $this->getEnvValue('SSL_ONLY') === 'true';
     }
 
     /**
@@ -105,7 +87,7 @@ class AppUtil
      */
     public function isMaintenance(): bool
     {
-        return $_ENV['MAINTENANCE_MODE'] === 'true';
+        return $this->getEnvValue('MAINTENANCE_MODE') === 'true';
     }
 
     /**
@@ -115,65 +97,19 @@ class AppUtil
      */
     public function isDatabaseLoggingEnabled(): bool
     {
-        return $_ENV['DATABASE_LOGGING'] === 'true';
+        return $this->getEnvValue('DATABASE_LOGGING') === 'true';
     }
 
     /**
-     * Get the log level
+     * Get the environment variable value
      *
-     * @return int The log level
-     */
-    public function getLogLevel(): int
-    {
-        return (int) $_ENV['LOG_LEVEL'];
-    }
-
-    /**
-     * Get the page limitter
+     * @param string $key The environment variable key
      *
-     * @return int The page limitter
+     * @return string The environment variable value
      */
-    public function getPageLimiter(): int
+    public function getEnvValue(string $key): string
     {
-        return (int) $_ENV['LIMIT_CONTENT_PER_PAGE'];
-    }
-
-    /** Get monitoring wait interval
-     *
-     * @return int The monitoring wait interval
-     */
-    public function getMonitoringInterval(): int
-    {
-        return (int) $_ENV['MONITORING_INTERVAL'];
-    }
-
-    /**
-     * Get the anti-log token
-     *
-     * @return string The anti-log token
-     */
-    public function getAntiLogToken(): string
-    {
-        return $_ENV['ANTI_LOG_TOKEN'];
-    }
-
-    /** Get the main database name
-     *
-     * @return string The main database name
-     */
-    public function getMainDatabaseName(): string
-    {
-        return $_ENV['DATABASE_NAME'];
-    }
-
-    /**
-     * Get the external API log token
-     *
-     * @return string The external API log token
-     */
-    public function getExternalApiLogToken(): string
-    {
-        return $_ENV['EXTERNAL_API_LOG_TOKEN'];
+        return $_ENV[$key];
     }
 
     /**

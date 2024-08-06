@@ -62,8 +62,8 @@ class LogsManagerController extends AbstractController
         $userId = $request->query->get('user_id', '0');
 
         // get page filters
-        $limitPerPage = $this->appUtil->getPageLimiter();
-        $mainDatabase = $this->appUtil->getMainDatabaseName();
+        $limitPerPage = $this->appUtil->getEnvValue('LIMIT_CONTENT_PER_PAGE');
+        $mainDatabase = $this->appUtil->getEnvValue('DATABASE_NAME');
 
         // get logs data
         $isAntiLogEnabled = $this->logManager->isAntiLogEnabled();

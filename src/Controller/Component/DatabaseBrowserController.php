@@ -105,7 +105,7 @@ class DatabaseBrowserController extends AbstractController
         }
 
         // get page limiter
-        $limitPerPage = $this->appUtil->getPageLimiter();
+        $limitPerPage = $this->appUtil->getEnvValue('LIMIT_CONTENT_PER_PAGE');
 
         // get the data from the table
         $tableData = $this->databaseManager->getTableData($databaseName, $tableName, $page);

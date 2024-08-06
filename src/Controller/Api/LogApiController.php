@@ -48,7 +48,7 @@ class LogApiController extends AbstractController
         }
 
         // get api token
-        $apiToken = $this->appUtil->getExternalApiLogToken();
+        $apiToken = $this->appUtil->getEnvValue('EXTERNAL_API_LOG_TOKEN');
 
         // check if token is valid
         if ($accessToken != $apiToken) {

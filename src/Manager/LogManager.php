@@ -78,7 +78,7 @@ class LogManager
         }
 
         // check required log level
-        if ($level > $this->appUtil->getLogLevel()) {
+        if ($level > (int) $this->appUtil->getEnvValue('LOG_LEVEL')) {
             return;
         }
 
@@ -135,7 +135,7 @@ class LogManager
         // set the anti-log cookie
         $this->cookieUtil->set(
             name: 'anti-log',
-            value: $this->appUtil->getAntiLogToken(),
+            value: $this->appUtil->getEnvValue('ANTI_LOG_TOKEN'),
             expiration: time() + (60 * 60 * 24 * 7 * 365)
         );
     }
@@ -170,7 +170,7 @@ class LogManager
         $cookieToken = $this->cookieUtil->get('anti-log');
 
         // check if anti-log token is valid
-        if ($cookieToken == $this->appUtil->getAntiLogToken()) {
+        if ($cookieToken == $this->appUtil->getEnvValue('ANTI_LOG_TOKEN')) {
             return true;
         }
 
@@ -238,7 +238,7 @@ class LogManager
     public function getLogsWhereStatus(string $status = 'all', int $userId = 0, int $page = 1): ?array
     {
         // get page limitter
-        $perPage = $this->appUtil->getPageLimiter();
+        $perPage = (int) $this->appUtil->getEnvValue('LIMIT_CONTENT_PER_PAGE');
 
         $repository = $this->entityManager->getRepository(Log::class);
 
@@ -364,7 +364,7 @@ class LogManager
     public function getSystemLogs(): array
     {
         // system logs directory
-        $systemLogsDirectory = $this->appUtil->getSystemLogsDirectory();
+        $systemLogsDirectory = $this->appUtil->getEnvValue('SYSTEM_LOGS_DIR');
 
         // set permissions to 777 for system logs directory
         shell_exec('sudo chmod -R 777 ' . $systemLogsDirectory);
@@ -411,7 +411,7 @@ class LogManager
         $log = null;
 
         // check if file exists
-        $filePath = $this->appUtil->getSystemLogsDirectory() . '/' . $logFile;
+        $filePath = $this->appUtil->getEnvValue('SYSTEM_LOGS_DIR') . '/' . $logFile;
         if (!file_exists($filePath)) {
             $this->errorManager->handleError(
                 message: 'error to get log file: ' . $filePath . ' not found',

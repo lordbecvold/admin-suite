@@ -48,8 +48,11 @@ class MonitoringManagerController extends AbstractController
         // get services list
         $services = $this->serviceManager->getServicesList();
 
+        // get page limit from config
+        $pageLimit = (int) $this->appUtil->getEnvValue('LIMIT_CONTENT_PER_PAGE');
+
         // get monitoring logs
-        $monitoringLogs = $this->logManager->getMonitoringLogs($this->appUtil->getPageLimiter());
+        $monitoringLogs = $this->logManager->getMonitoringLogs($pageLimit);
 
         // return view
         return $this->render('component/monitoring-manager/monitoring-dashboard.twig', [

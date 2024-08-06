@@ -58,7 +58,7 @@ class BannedCheckMiddleware
                 // render the internal error template
                 $content = $this->twig->render('error/error-banned.twig', [
                     'reason' => $this->banManager->getBanReason($userId),
-                    'admin_contact' => $this->appUtil->getAdminContactEmail()
+                    'admin_contact' => $this->appUtil->getEnvValue('ADMIN_CONTACT')
                 ]);
 
                 // log banned access

@@ -305,7 +305,7 @@ class DatabaseManager
         }
 
         // get the number of rows in the table
-        $pageLimit = $this->appUtil->getPageLimiter();
+        $pageLimit = (int) $this->appUtil->getEnvValue('LIMIT_CONTENT_PER_PAGE');
 
         // calculate the offset for pagination
         $offset = ($page - 1) * $pageLimit;
@@ -363,7 +363,7 @@ class DatabaseManager
         }
 
         // get the number of rows in the table
-        $pageLimit = $this->appUtil->getPageLimiter();
+        $pageLimit = (int) $this->appUtil->getEnvValue('LIMIT_CONTENT_PER_PAGE');
 
         // build the SQL query to get the total number of rows
         $sql = "SELECT COUNT(*) AS total_rows FROM {$dbName}.{$tableName}";

@@ -307,7 +307,7 @@ class AuthManager
                 // send email alert
                 if (!$this->logManager->isAntiLogEnabled()) {
                     $this->emailManager->sendDefaultEmail(
-                        recipient: $this->appUtil->getAdminContactEmail(),
+                        recipient: $this->appUtil->getEnvValue('ADMIN_CONTACT'),
                         subject: 'LOGIN ALERT',
                         message: 'User ' . $username . ' has logged to admin-suite dashboard, login log has been saved in database.'
                     );

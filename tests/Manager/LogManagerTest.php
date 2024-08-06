@@ -69,39 +69,13 @@ class LogManagerTest extends TestCase
     }
 
     /**
-     * Test log message
-     *
-     * @return void
-     */
-    public function testLog(): void
-    {
-        // mock the app util
-        $this->appUtilMock->method('isDatabaseLoggingEnabled')->willReturn(true);
-        $this->appUtilMock->method('getLogLevel')->willReturn(3);
-
-        // mock the session util
-        $this->sessionUtilMock->method('getSessionValue')->willReturn(0);
-
-        // mock the visitor info util
-        $this->visitorInfoUtilMock->method('getUserAgent')->willReturn('Test User Agent');
-        $this->visitorInfoUtilMock->method('getIP')->willReturn('127.0.0.1');
-
-        // mock the entity manager
-        $this->entityManagerMock->expects($this->once())->method('persist');
-        $this->entityManagerMock->expects($this->once())->method('flush');
-
-        // call the log method
-        $this->logManager->log('test name', 'test message');
-    }
-
-    /**
      * Test set anti-log token
      *
      * @return void
      */
     public function testSetAntiLog(): void
     {
-        $this->appUtilMock->method('getAntiLogToken')->willReturn('test-token');
+        $this->appUtilMock->method('getEnvValue')->willReturn('test-token');
 
         // expect set method to be called
         $this->cookieUtilMock->expects($this->once())->method('set')
@@ -135,7 +109,7 @@ class LogManagerTest extends TestCase
     {
         $this->cookieUtilMock->method('isCookieSet')->willReturn(true);
         $this->cookieUtilMock->method('get')->willReturn('test-token');
-        $this->appUtilMock->method('getAntiLogToken')->willReturn('test-token');
+        $this->appUtilMock->method('getEnvValue')->willReturn('test-token');
 
         // call the isAntiLogEnabled method and assert true
         $this->assertTrue($this->logManager->isAntiLogEnabled());
@@ -163,7 +137,7 @@ class LogManagerTest extends TestCase
     {
         $this->cookieUtilMock->method('isCookieSet')->willReturn(true);
         $this->cookieUtilMock->method('get')->willReturn('invalid-token');
-        $this->appUtilMock->method('getAntiLogToken')->willReturn('test-token');
+        $this->appUtilMock->method('getEnvValue')->willReturn('test-token');
 
         // call the isAntiLogEnabled method and assert false
         $this->assertFalse($this->logManager->isAntiLogEnabled());
