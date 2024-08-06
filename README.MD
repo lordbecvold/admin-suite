@@ -9,7 +9,6 @@
 ![Dashboard](.github/assets/preview.png)
 
 ## ROADMAP
-- [ ] Simple chat component
 - [ ] Terminal component
 
 ## Code base
