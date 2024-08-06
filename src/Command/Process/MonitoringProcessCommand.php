@@ -100,7 +100,7 @@ class MonitoringProcessCommand extends Command
                 $this->monitoringManager->monitorInit($io);
 
                 // sleep for the monitoring interval
-                sleep($this->appUtil->getMonitoringInterval() * 60);
+                sleep((int) $this->appUtil->getEnvValue('MONITORING_INTERVAL') * 60);
             }
         }
     }
