@@ -11,15 +11,18 @@
 </div>
 
 {# TABLE TRUNCATE CONFIRMATION #}
-<div class="mt-8 mb-8 mx-auto max-w-lg p-4 bg-neutral-800 shadow-lg border border-gray-600">
-    <h2 class="text-2xl text-white mb-4 text-center">Truncate table {{ tableName|e }}</h2>
+<div class="mt-8 mb-8 mx-auto max-w-lg p-4 card-color text-white shadow-lg border border-gray-600">
+    <h2 class="text-2xl font-semibold mb-4 text-center">Truncate table {{ tableName|e }}</h2>
 
-    <div class="mt-6 text-center">
+    <p class="text-center mb-4">Are you sure you want to truncate the table <strong>{{ tableName|e }}</strong>?</p>
+
+    <div class="flex justify-center space-x-2">
         {# SUBMIT BUTTON #}
-        <a href={{ path('app_manager_database_truncate', {'database': databaseName, 'table': tableName, 'confirm': 'yes'}) }} class="mr-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 shadow">YES</a>
+        <a href={{ path('app_manager_database_truncate', {'database': databaseName, 'table': tableName, 'confirm': 'yes'}) }} class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow">YES</a>
 
         {# CANCEL BUTTON #}
-        <a href={{ path('app_manager_database_table_browser', {'database': databaseName, 'table': tableName}) }} class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 shadow">NO</a>
+        <a href={{ path('app_manager_database_table_browser', {'database': databaseName, 'table': tableName}) }} class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow">NO</a>
     </div>
 </div>
+
 {% endblock %}

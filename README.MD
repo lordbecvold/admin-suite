@@ -9,10 +9,6 @@
 ![Dashboard](.github/assets/preview.png)
 
 ## ROADMAP
-- [ ] Component disable/enable config
-    - [ ] Default enable all components
-    - [ ] Disable specific component (by controller or route name)
-- [ ] Docker support (service type docker)
 - [ ] System resources usage history graph
 - [ ] Simple chat component
 - [ ] Terminal component
