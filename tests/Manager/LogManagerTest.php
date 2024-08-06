@@ -69,6 +69,90 @@ class LogManagerTest extends TestCase
     }
 
     /**
+     * Test success save log
+     *
+     * @return void
+     */
+    public function testLogSuccess(): void
+    {
+        // mock dependencies
+        $this->appUtilMock->method('isDatabaseLoggingEnabled')->willReturn(true);
+        $this->appUtilMock->method('getEnvValue')->with('LOG_LEVEL')->willReturn('4');
+        $this->visitorInfoUtilMock->method('getIP')->willReturn('127.0.0.1');
+        $this->visitorInfoUtilMock->method('getUserAgent')->willReturn('UnitTestAgent');
+        $this->sessionUtilMock->method('getSessionValue')->with('user-identifier', 0)->willReturn(1);
+
+        // expect process method to be called
+        $this->entityManagerMock->expects($this->once())->method('persist');
+        $this->entityManagerMock->expects($this->once())->method('flush');
+
+        // testing method call
+        $this->logManager->log('TestLog', 'This is a test log message.', LogManager::LEVEL_INFO);
+    }
+
+    /**
+     * Test log connection refused
+     *
+     * @return void
+     */
+    public function testLogConnectionRefused(): void
+    {
+        // mock dependencies
+        $this->entityManagerMock->expects($this->never())->method('persist');
+        $this->entityManagerMock->expects($this->never())->method('flush');
+
+        // testing method call
+        $this->logManager->log('TestLog', 'Connection refused', LogManager::LEVEL_CRITICAL);
+    }
+
+    /**
+     * Test log level too low
+     *
+     * @return void
+     */
+    public function testLogLevelTooLow(): void
+    {
+        // mock dependencies
+        $this->appUtilMock->method('isDatabaseLoggingEnabled')->willReturn(true);
+        $this->appUtilMock->method('getEnvValue')->with('LOG_LEVEL')->willReturn('2');
+
+        // expect process method to be called
+        $this->entityManagerMock->expects($this->never())->method('persist');
+        $this->entityManagerMock->expects($this->never())->method('flush');
+
+        // testing method call
+        $this->logManager->log('TestLog', 'This is a test log message.', LogManager::LEVEL_INFO);
+    }
+
+    /**
+     * Test log database error
+     *
+     * @return void
+     */
+    public function testLogDatabaseError(): void
+    {
+        // mock dependencies
+        $this->appUtilMock->method('isDatabaseLoggingEnabled')->willReturn(true);
+        $this->appUtilMock->method('getEnvValue')->with('LOG_LEVEL')->willReturn('4');
+        $this->visitorInfoUtilMock->method('getIP')->willReturn('127.0.0.1');
+        $this->visitorInfoUtilMock->method('getUserAgent')->willReturn('UnitTestAgent');
+        $this->sessionUtilMock->method('getSessionValue')->with('user-identifier', 0)->willReturn(1);
+
+        // expect process method to be called
+        $this->entityManagerMock->expects($this->once())->method('persist');
+        $this->entityManagerMock->method('flush')->will($this->throwException(new \Exception('Database error')));
+
+        // mock error manager
+        $this->errorManagerMock->expects($this->once())->method('handleError')->with(
+            $this->stringContains('log-error: Database error'),
+            Response::HTTP_INTERNAL_SERVER_ERROR
+        );
+
+        // testing method call
+        $this->logManager->log('TestLog', 'This is a test log message.', LogManager::LEVEL_INFO);
+    }
+
+    /**
      * Test set anti-log token
      *
      * @return void
