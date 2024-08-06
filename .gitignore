@@ -17,9 +17,6 @@
 /composer.lock
 /vendor/
 
-# migrations
-/migrations
-
 # phpunit files
 .phpunit.result.cache
 

@@ -20,9 +20,7 @@ sed -i 's/^\(APP_ENV=\)dev/\1prod/' .env
 sh scripts/install.sh
 
 # run database migrations
-mkdir migrations
 php bin/console doctrine:database:create --if-not-exists
-php bin/console make:migration --no-interaction
 php bin/console doctrine:migrations:migrate --no-interaction
                     
 # run app commands
