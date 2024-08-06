@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# enable maintenance mode
+php bin/console app:toggle:maintenance
+
 # stop admin-suite services
 sudo systemctl stop apache2
 sudo systemctl stop admin-suite-monitoring
@@ -32,6 +35,9 @@ sudo chown -R www-data:www-data var/
 # start admin-suite services
 sudo systemctl start apache2
 sudo systemctl start admin-suite-monitoring
+
+# disable maintenance mode
+php bin/console app:toggle:maintenance
 
 # make initial request for reload cache
 curl -X GET https://admin-suite.becvar.xyz
