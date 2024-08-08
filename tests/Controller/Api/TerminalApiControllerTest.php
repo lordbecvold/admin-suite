@@ -31,7 +31,7 @@ class TerminalApiControllerTest extends CustomTestCase
      */
     public function testExecuteTerminalCommandWithEmptyCommand(): void
     {
-        $this->client->request('GET', '/api/system/terminal');
+        $this->client->request('POST', '/api/system/terminal');
 
         // get response content
         $responseContent = $this->client->getResponse()->getContent();
@@ -53,7 +53,7 @@ class TerminalApiControllerTest extends CustomTestCase
      */
     public function testExecuteTerminalCommandSuccessfully(): void
     {
-        $this->client->request('GET', '/api/system/terminal', [
+        $this->client->request('POST', '/api/system/terminal', [
             'command' => 'ls'
         ]);
 
