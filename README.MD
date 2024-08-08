@@ -8,9 +8,6 @@
 ## Dashboard preview
 ![Dashboard](.github/assets/preview.png)
 
-## ROADMAP
-- [ ] Terminal component
-
 ## Code base
 This project is based on the Symfony framework. The entire project is designed to require as few dependencies and additional software as possible for easy installation and maintenance.
 

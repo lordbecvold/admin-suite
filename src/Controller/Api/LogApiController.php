@@ -5,8 +5,8 @@ namespace App\Controller\Api;
 use App\Util\AppUtil;
 use App\Manager\LogManager;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -32,10 +32,10 @@ class LogApiController extends AbstractController
      *
      * @param Request $request The request object
      *
-     * @return Response The JSON response
+     * @return JsonResponse The JSON response with the output
      */
     #[Route('/api/external/log', methods:['GET'], name: 'app_api_external_log')]
-    public function externalLog(Request $request): Response
+    public function externalLog(Request $request): JsonResponse
     {
         // get access token
         $accessToken = (string) $request->query->get('token');
@@ -44,7 +44,7 @@ class LogApiController extends AbstractController
         if (empty($accessToken)) {
             return $this->json([
                 'error' => 'Access token is not set'
-            ], Response::HTTP_BAD_REQUEST);
+            ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         // get api token
@@ -54,7 +54,7 @@ class LogApiController extends AbstractController
         if ($accessToken != $apiToken) {
             return $this->json([
                 'error' => 'Access token is invalid'
-            ], Response::HTTP_UNAUTHORIZED);
+            ], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
         // get log data
@@ -66,7 +66,7 @@ class LogApiController extends AbstractController
         if (empty($name) || empty($message) || empty($level)) {
             return $this->json([
                 'error' => 'Parameters name, message and level are required'
-            ], Response::HTTP_BAD_REQUEST);
+            ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         // log the message
@@ -74,6 +74,6 @@ class LogApiController extends AbstractController
 
         return $this->json([
             'success' => 'Log message has been logged'
-        ], Response::HTTP_OK);
+        ], JsonResponse::HTTP_OK);
     }
 }

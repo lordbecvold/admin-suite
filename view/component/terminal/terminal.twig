@@ -1,0 +1,29 @@
+{% extends 'common/layout.twig' %}
+
+{# TERMINAL COMPONENT VIEW #}
+{% block component %} 
+{# SUB-NAVIGATION #}
+<div class="bg-neutral-900 border-b border-neutral-700 sub-navigation breadcrumb">
+    <a href={{ path('app_dashboard') }} class="border border-gray-600 font-bold px-1 text-white">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </a>
+    <span class="mr-1 text-white">Terminal</span>
+</div>
+
+<div class="component" style="background: rgb(12, 12, 12);">
+    <div class="terminal-component">
+        <div id="terminal">
+            <pre id="output-container" class="whitespace-pre-wrap break-words"></pre>
+            <div id="command-container">
+                <div id="prompt-line">
+                    <span id="path" class="text-blue-600"></span><span id="prompt" class="text-white">$</span>
+                </div>
+                <input type="text" id="command" autocorrect="off" autocapitalize="none" autocomplete="off" spellcheck="false" inputmode="text" pattern=".*">
+            </div>
+        </div>
+    </div>
+
+    {# INCLUDE TERMINAL JS FUNCTIONALITY #}
+    {{ encore_entry_script_tags('terminal-js') }}
+</div>
+{% endblock %}

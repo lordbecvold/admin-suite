@@ -10,6 +10,7 @@ Encore
     .addEntry('index-css', './assets/css/index.css')
 
     // register js
+    .addEntry('terminal-js', './assets/js/terminal.js')
     .addEntry('sidebar-element-js', './assets/js/sidebar-element.js')
     .addEntry('todo-manager-js', './assets/js/manager/todo-manager.js')
     .addEntry('user-manager-js', './assets/js/manager/user-manager.js')

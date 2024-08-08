@@ -40,7 +40,7 @@ class AuthentificatedCheckMiddleware
         // check if path info is a string and not login or register page
         if (
             is_string($pathInfo) &&
-            !str_starts_with($pathInfo, '/api') &&
+            $pathInfo !== '/api/external/log' &&
             $pathInfo !== '/login' &&
             $pathInfo !== '/register' &&
             $pathInfo !== '/' &&

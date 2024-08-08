@@ -418,6 +418,29 @@ class AuthManager
     }
 
     /**
+     * Get the username of the logged user
+     *
+     * @return string|null The username of the logged user or null if not found or invalid.
+     */
+    public function getLoggedUsername(): ?string
+    {
+        $userRepo = $this->userManager->getUserRepository([
+            'token' => $this->getLoggedUserToken()
+        ]);
+
+        // check if user exist
+        if ($userRepo == null) {
+            $this->errorManager->handleError(
+                message: 'error to get logged user username',
+                code: Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+            return null;
+        }
+
+        return $userRepo->getUsername();
+    }
+
+    /**
      * User logout action
      *
      * @return void

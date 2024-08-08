@@ -191,6 +191,66 @@
 	overflow-y: auto; 
 }
 
+/** terminal component */
+.terminal-component {
+    background-color: rgb(12, 12, 12);
+    padding: 3px;
+    font-family: monospace !important;
+    font-size: 16px !important;
+    position: relative;
+}
+
+.terminal-component #terminal {
+    width: 100%;
+    height: 100%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-bottom: 5px;
+}
+
+.terminal-component #output-container {
+    color: white;
+    flex-grow: 1;
+    padding-top: 0px !important;
+}
+
+.terminal-component #command-container {
+    display: flex;
+    align-items: center;
+    padding-top: 0px !important;
+    position: sticky;
+    bottom: 0;
+    background-color: rgb(12, 12, 12);
+}
+
+.terminal-component .command-history-prompt {
+    margin-top: 1.3px;
+}
+
+.terminal-component #prompt {
+    display: inline-block;
+}
+
+.terminal-component #prompt-line {
+    white-space: nowrap;
+    color: #6262ff;
+}
+
+.terminal-component .last-command {
+    margin-left: 6px;
+}
+
+.terminal-component #command {
+    width: 100%;
+    background-color: transparent;
+    border: none !important;
+    outline: none !important;
+    margin-left: 5px;
+    color: white;
+}
+
 /* apply on mobile devices */
 @media screen and (max-width: 400px) { 
 	.phone-none {

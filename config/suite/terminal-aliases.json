@@ -1,0 +1,5 @@
+{
+    "ll": "ls -alF -v",
+    "space": "df -BG",
+    "srv": "cd /services/"
+}

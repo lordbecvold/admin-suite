@@ -80,7 +80,11 @@ class NonAuthRedirectTest extends WebTestCase
         'file_browser' => [
             '/filesystem',
             '/filesystem/view'
-        ]
+        ],
+        'terminal' => [
+            '/terminal',
+            '/api/system/terminal'
+        ],
     ];
 
     /**
