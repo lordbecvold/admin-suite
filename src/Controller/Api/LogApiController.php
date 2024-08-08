@@ -34,7 +34,7 @@ class LogApiController extends AbstractController
      *
      * @return JsonResponse The JSON response with the output
      */
-    #[Route('/api/external/log', methods:['GET'], name: 'app_api_external_log')]
+    #[Route('/api/external/log', methods:['POST'], name: 'app_api_external_log')]
     public function externalLog(Request $request): JsonResponse
     {
         // get access token
