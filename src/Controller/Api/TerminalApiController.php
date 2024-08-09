@@ -149,12 +149,20 @@ class TerminalApiController extends AbstractController
 
             // check if command run valid
             if ($returnCode !== 0) {
-                $this->logManager->log('terminal', $username . ' executed command: ' . $command . ' with error code: ' . $returnCode);
+                $this->logManager->log(
+                    name: 'terminal',
+                    message: $username . ' executed command: ' . $command . ' with error code: ' . $returnCode,
+                    level: LogManager::LEVEL_WARNING
+                );
                 return new Response('error to execute command: ' . $command, Response::HTTP_OK);
             }
 
             // log execute action
-            $this->logManager->log('terminal', $username . ' executed command: ' . $command);
+            $this->logManager->log(
+                name: 'terminal',
+                message: $username . ' executed command: ' . $command,
+                level: LogManager::LEVEL_WARNING
+            );
 
             // get output
             $output = implode("\n", $output);

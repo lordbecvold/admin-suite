@@ -2,8 +2,8 @@
 
 namespace App\Controller\Component;
 
-use App\Annotation\Authorization;
 use App\Manager\AuthManager;
+use App\Annotation\Authorization;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
